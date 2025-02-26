@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Searchbar } from "./components/Searchbar";
+import Navbar from "./components/Navbar";
+import PlayerProvider from "./context/PlayerContext";
+import Player from "./components/player/Player";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,11 +28,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <PlayerProvider>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased relative w-screen h-[100dvh] overflow-hidden flex`}>
+          <Player />
+          <Navbar />
+          <div className="md:ml-[62px] gap-4 grid grow grid-rows-[auto_1fr] p-4">
+            <Searchbar />
+            <main className="relative overflow-auto p-3">
+              {children}
+            </main>
+          </div>
+        </body>
+      </PlayerProvider>
     </html>
   );
 }
