@@ -2,11 +2,10 @@
 
 import BlocksWrapper from "./BlocksWrapper";
 import { PageWrapper } from "./PageWrapper";
-import ResultBlock from "./ResultBlock";
-import ResultsTopBar from "./ResultsTopBar";
-import ErrorDiv from "./ErrorDiv";
-import type { Movie, Paginated, Result, TvShow } from "../tmdb/lib";
-
+import ResultBlock from "../result/ResultBlock";
+import ResultsTopBar from "../result/ResultsTopBar";
+import ErrorDiv from "../ErrorDiv";
+import type { Movie, Paginated, Result, TvShow } from "@/app/tmdb/lib";
 
 export default function TrendingSmallResults({ result, href, title }: { result: Result<Paginated<Movie | TvShow>>, href: string, title: string }) {
   return (

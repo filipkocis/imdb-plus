@@ -1,8 +1,8 @@
-import BlocksWrapper from "@/app/components/BlocksWrapper";
+import BlocksWrapper from "@/app/components/wrapper/BlocksWrapper";
 import ErrorDiv from "@/app/components/ErrorDiv";
-import { PageWrapper } from "@/app/components/PageWrapper";
-import ResultBlock from "@/app/components/ResultBlock";
-import ResultsTopBar from "@/app/components/ResultsTopBar";
+import { PageWrapper } from "@/app/components/wrapper/PageWrapper";
+import ResultBlock from "@/app/components/result/ResultBlock";
+import ResultsTopBar from "@/app/components/result/ResultsTopBar";
 import { TMDB } from "@/app/tmdb/lib";
 
 export default async function SearchPage({ params, searchParams }: { 

@@ -1,5 +1,5 @@
-import { PageWrapper } from "./components/PageWrapper";
-import TrendingSmallResults from "./components/TrendingSmallResults";
+import { PageWrapper } from "./components/wrapper/PageWrapper";
+import TrendingSmallResults from "./components/wrapper/TrendingSmallResults";
 import { TMDB } from "./tmdb/lib";
 
 export default async function Home() {

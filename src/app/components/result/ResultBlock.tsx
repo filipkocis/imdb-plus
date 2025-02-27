@@ -1,4 +1,4 @@
-import { SearchResult, TMDB } from "../tmdb/lib";
+import { SearchResult, TMDB } from "@/app/tmdb/lib";
 import Link from "next/link";
 import Image from "next/image";
 import { Fragment } from "react";

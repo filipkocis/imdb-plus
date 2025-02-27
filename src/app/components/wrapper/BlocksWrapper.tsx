@@ -1,9 +1,9 @@
-import { cn } from "../utils/merge"
+import { cn } from "../../utils/merge"
 
 export default function BlocksWrapper({ small, className, children }: { small?: boolean, className?: string, children: React.ReactNode }) {
   if (small) return (
     <div className={cn("overflow-x-auto", className)}>
-      <div className="flex gap-2 w-max [&>*]:w-1/2">
+      <div className="flex gap-2 w-max [&>*]:w-[350px]">
         {children} 
       </div>
     </div>

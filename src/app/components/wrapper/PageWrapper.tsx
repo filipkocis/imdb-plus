@@ -1,4 +1,4 @@
-import { cn } from "../utils/merge"
+import { cn } from "../../utils/merge"
 
 export function PageWrapper({ className, children }: { className?: string, children: React.ReactNode }) {
   return (

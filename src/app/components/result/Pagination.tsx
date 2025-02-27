@@ -9,7 +9,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { useSearchParams } from "next/navigation";
-import { cn } from "../utils/merge";
+import { cn } from "../../utils/merge";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 function getPageNumbers(currentPage: number, totalPages: number, maxButtons = 5): number[] {
