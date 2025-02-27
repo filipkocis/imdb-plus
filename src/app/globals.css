@@ -13,6 +13,9 @@
   --foreground: #ededed;
   --contrast: #f6c700;
   --secondary: #2d2d2d;
+
+
+  --radius: 0.5rem;
 }
 
 body {
