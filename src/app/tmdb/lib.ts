@@ -134,6 +134,43 @@ export class TMDB {
       return Res.error(error.message);
     }
   }
+
+  static async getVideos(id: number, type: "movie" | "tv"): Promise<Result<Videos>> {
+    try {
+      const response = await fetch(`${TMDB.BASE}/${type}/${id}/videos`, TMDB.options('GET'))  
+      const json = await response.json();
+      if (json.success === false) throw new Error(json.status_message);
+      return Res.ok(json);
+    } catch (error: any) {
+      return Res.error(error.message);
+    }
+  }
+
+  static async getTrailer(id: number, type: "movie" | "tv", fullLink: boolean = false): Promise<Result<string>> {
+    try {
+      const videos = await TMDB.getVideos(id, type);
+      if (videos.error !== undefined) return Res.error(videos.error);
+
+      const filtered = videos.ok.results
+        .filter(video => video.site === "YouTube")
+        .sort((a, b) => {
+          if (a.official !== b.official) return b.official as any - (a.official as any);
+
+          if (a.type === "Trailer" && b.type !== "Trailer") return -1;
+          if (b.type === "Trailer" && a.type !== "Trailer") return 1;
+
+          return new Date(a.published_at).getTime() - new Date(b.published_at).getTime();
+        });
+
+      if (filtered.length) {
+        if (fullLink) return Res.ok(`https://www.youtube.com/watch?v=${filtered[0].key}`);
+        else return Res.ok(filtered[0].key);
+      }
+      return Res.error("No trailer found");
+    } catch (error: any) {
+      return Res.error(error.message)
+    }
+  }
 }
 
 export type SearchResult = Movie | TvShow | Person
@@ -168,6 +205,8 @@ type ProductionCompany = {
   origin_country: string
 }
 
+type Network = ProductionCompany
+
 type ProductionCountry = {
   iso_3166_1: string
   name: string
@@ -188,6 +227,7 @@ export type MovieDetails = {
   homepage: string
   id: number
   imdb_id: string
+  origin_country: string[]
   original_language: string
   original_title: string
   overview: string
@@ -241,12 +281,7 @@ export type TvDetails = {
   }
   name: string
   next_episode_to_air: string
-  networks: {
-    id: number
-    logo_path: string
-    name: string
-    origin_country: string
-  }[]
+  networks: Network[]
   number_of_episodes: number
   number_of_seasons: number
   origin_country: string[]
@@ -351,4 +386,22 @@ export type Crew = PersonBase & {
   credit_id: string
   department: string
   job: string
+}
+
+export type Videos = {
+  id: number
+  results: Video[]
+}
+
+export type Video = {
+  iso_639_1: string
+  iso_3166_1: string
+  name: string
+  key: string
+  site: string
+  size: number
+  type: string
+  official: boolean
+  published_at: string
+  id: string
 }
