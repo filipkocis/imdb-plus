@@ -1,16 +1,17 @@
-export default function Home() {
+import { PageWrapper } from "./components/PageWrapper";
+import TrendingSmallResults from "./components/TrendingSmallResults";
+import { TMDB } from "./tmdb/lib";
+
+export default async function Home() {
+  const movieResult = await TMDB.getTrendingMovies("week", 1);
+  const tvResult = await TMDB.getTrendingTV("week", 1);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-      <Button href="/movie" label="Search Movies" />
-      <Button href="/tv" label="Search TV Shows" />
-    </div>
+    <PageWrapper className="grid-rows-[auto] gap-20">
+      <TrendingSmallResults result={movieResult} href="/trending/?t=movie" title="Trending Movies" /> 
+      <TrendingSmallResults result={tvResult} href="/trending/?t=tv" title="Trending TV Shows" /> 
+    </PageWrapper>
   );
 }
 
-function Button({ href, label }: { href: string, label: string }) {
-  return (
-    <button className="flex bg-black border-2 rounded-lg transition-all hover:bg-orange-400">
-      <a className="p-4" href={href}>{label}</a>
-    </button>
-  )
-}
+
