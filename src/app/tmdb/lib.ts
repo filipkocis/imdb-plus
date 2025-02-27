@@ -14,8 +14,9 @@ export class TMDB {
     };
   }
 
-  static poster(path: string) {
-    return `https://image.tmdb.org/t/p/w500${path}`;
+  static poster(path: string | null, fallback: string, size: string = "w500") {
+    if (!path) return fallback;
+    return `https://image.tmdb.org/t/p/${size}${path}`;
   }
 
   static async search(query: string, page: number = 1): Promise<Result<Paginated<SearchResult>>> {
@@ -100,6 +101,39 @@ export class TMDB {
       return Res.error(error.message);
     }
   }
+
+  static async getCredits(id: number, type: "movie" | "tv"): Promise<Result<Credits>> {
+    try {
+      const response = await fetch(`${TMDB.BASE}/${type}/${id}/credits`, TMDB.options('GET'))  
+      const json = await response.json();
+      if (json.success === false) throw new Error(json.status_message);
+      return Res.ok(json);
+    } catch (error: any) {
+      return Res.error(error.message);
+    }
+  }
+
+  static async getMovieDetails(id: number): Promise<Result<MovieDetails>> {
+    try {
+      const response = await fetch(`${TMDB.BASE}/movie/${id}`, TMDB.options('GET'))  
+      const json = await response.json();
+      if (json.success === false) throw new Error(json.status_message);
+      return Res.ok(json);
+    } catch (error: any) {
+      return Res.error(error.message);
+    }
+  }
+
+  static async getTvDetails(id: number): Promise<Result<TvDetails>> {
+    try {
+      const response = await fetch(`${TMDB.BASE}/tv/${id}`, TMDB.options('GET'))  
+      const json = await response.json();
+      if (json.success === false) throw new Error(json.status_message);
+      return Res.ok(json);
+    } catch (error: any) {
+      return Res.error(error.message);
+    }
+  }
 }
 
 export type SearchResult = Movie | TvShow | Person
@@ -122,6 +156,125 @@ export type Movie = {
   vote_count: number
 }
 
+type Genre = {
+  id: number
+  name: string
+}
+
+type ProductionCompany = {
+  id: number
+  logo_path: string
+  name: string
+  origin_country: string
+}
+
+type ProductionCountry = {
+  iso_3166_1: string
+  name: string
+}
+
+type SpokenLanguage = {
+  english_name: string
+  iso_639_1: string
+  name: string
+}
+
+export type MovieDetails = {
+  adult: boolean
+  backdrop_path: string | null
+  belongs_to_collection: string
+  budget: number
+  genres: Genre[]
+  homepage: string
+  id: number
+  imdb_id: string
+  original_language: string
+  original_title: string
+  overview: string
+  popularity: number
+  poster_path: string
+  production_companies: ProductionCompany[]
+  production_countries: ProductionCountry[]
+  release_date: string
+  revenue: number
+  runtime: number
+  spoken_languages: SpokenLanguage[]
+  status: string
+  tagline: string
+  title: string
+  video: boolean
+  vote_average: number
+  vote_count: number
+}
+
+export type TvDetails = {
+  adult: boolean
+  backdrop_path: string | null
+  created_by: {
+    id: number
+    credit_id: string
+    name: string
+    gender: number
+    profile_path: string
+  }[]
+  episode_run_time: number[]
+  first_air_date: string
+  genres: Genre[]
+  homepage: string
+  id: number,
+  in_production: boolean
+  languages: string[]
+  last_air_date: string
+  last_episode_to_air: {
+    id: number
+    name: string
+    overview: string
+    vote_average: number
+    vote_count: number
+    air_date: string
+    episode_number: number
+    production_code: string
+    runtime: number
+    season_number: number
+    show_id: number
+    still_path: string
+  }
+  name: string
+  next_episode_to_air: string
+  networks: {
+    id: number
+    logo_path: string
+    name: string
+    origin_country: string
+  }[]
+  number_of_episodes: number
+  number_of_seasons: number
+  origin_country: string[]
+  original_language: string
+  original_name: string
+  overview: string
+  popularity: number
+  poster_path: string
+  production_companies: ProductionCompany[]
+  production_countries: ProductionCountry[]
+  seasons: {
+    air_date: string
+    episode_count: number
+    id: number
+    name: string
+    overview: string
+    poster_path: string
+    season_number: number
+    vote_average: number
+  }[]
+  spoken_languages: SpokenLanguage[]
+  status: string
+  tagline: string
+  type: string
+  vote_average: number
+  vote_count: number
+}
+
 export type TvShow = {
   media_type: "tv"
   adult: boolean
@@ -138,19 +291,6 @@ export type TvShow = {
   poster_path: string | null
   vote_average: number
   vote_count: number
-}
-
-export type Person = {
-  adult: boolean
-  gender: number
-  id: number
-  known_for: (Movie | TvShow)[]
-  known_for_department: string
-  media_type: "person"
-  name: string
-  original_name: string
-  popularity: number 
-  profile_path: string | null 
 }
 
 export type Paginated<T> = {
@@ -176,4 +316,39 @@ export type Result<T> = {
 } | {
   ok: undefined
   error: string
+}
+
+export type Credits = {
+  id: number
+  cast: Cast[]
+  crew: Crew[]
+}
+
+type PersonBase = {
+  adult: boolean
+  gender: number
+  id: number
+  known_for_department: string
+  name: string
+  original_name: string
+  popularity: number 
+  profile_path: string | null 
+}
+
+export type Person = PersonBase & {
+  media_type: "person"
+  known_for: (Movie | TvShow)[]
+}
+
+export type Cast = PersonBase & {
+  cast_id: number
+  character: string
+  credit_id: string
+  order: number
+}
+
+export type Crew = PersonBase & {
+  credit_id: string
+  department: string
+  job: string
 }
