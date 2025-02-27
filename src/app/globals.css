@@ -5,7 +5,7 @@
 /* For Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #555 var(--background);;
+  scrollbar-color: #555 transparent;
 }
 
 :root {

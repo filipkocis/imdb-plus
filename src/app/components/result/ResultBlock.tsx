@@ -5,8 +5,9 @@ import { Fragment } from "react";
 import UnavailablePoster from "@/assets/unavailable.png"
 import { CiStar } from "react-icons/ci";
 import { FaRegCirclePlay } from "react-icons/fa6";
+import { cn } from "@/lib/utils";
 
-export default function ResultBlock({ item }: { item: SearchResult }) {
+export default function ResultBlock({ item, className }: { item: SearchResult, className?: string }) {
   const href = `/${item.media_type}/${item.id}`;
 
   let name, posterPath, imageAlt, description;
@@ -29,7 +30,7 @@ export default function ResultBlock({ item }: { item: SearchResult }) {
   }
 
   return (
-    <Link href={href} className="group relative flex flex-col gap-2 overflow-hidden rounded-md"> 
+    <Link href={href} className={cn("group relative flex flex-col gap-2 overflow-hidden rounded-md", className)}> 
       {item.media_type !== 'person' && (
         <div className="flex inset-0 z-10 absolute items-center justify-center scale-[150%] opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
           <FaRegCirclePlay size={48} className="text-contrast" />
@@ -41,7 +42,7 @@ export default function ResultBlock({ item }: { item: SearchResult }) {
       }}>
         <Image 
           className="-z-10 group-hover:opacity-85 w-full h-full grow aspect-[2/3] overflow-hidden rounded-2xl" 
-          src={posterPath ? TMDB.poster(posterPath) : UnavailablePoster} 
+          src={posterPath ? TMDB.poster(posterPath, "", "w500") : UnavailablePoster} 
           alt={imageAlt}
           width={200} 
           height={300} 
@@ -63,7 +64,7 @@ export default function ResultBlock({ item }: { item: SearchResult }) {
   )
 }
 
-function parseDate(date: string) {
+export function parseDate(date: string) {
   if (!date) return "Unknown date"
 
   const parts = new Date(date)

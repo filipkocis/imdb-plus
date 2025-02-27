@@ -4,6 +4,9 @@ import { createContext, useContext, useState } from "react";
 
 export type PlayerOptions = {
   id: string
+  type: 'youtube'
+} | {
+  id: string
   type: 'movie'
 } | {
   id: string
