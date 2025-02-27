@@ -10,7 +10,7 @@ export default function Navbar() {
       </div>
       <div className="flex flex-col grow justify-center">
         <nav className="flex max-md:justify-center md:flex-col gap-2 md:py-4 border-t-2 md:border-b-2 border-secondary">
-          <NavLink href="/home" icon="home" />
+          <NavLink href="/" icon="home" />
           <NavLink href="/movie" icon="movie" />
           <NavLink href="/tv" icon="tv" />
           <NavLink href="/search" icon="search" />
