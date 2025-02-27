@@ -29,10 +29,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <PlayerProvider>
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased relative w-screen h-[100dvh] overflow-hidden flex`}>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased relative w-screen h-[100dvh] overflow-hidden flex justify-center`}>
           <Player />
           <Navbar />
-          <div className="md:ml-[62px] gap-4 grid grow grid-rows-[auto_1fr] p-4">
+          <div className="md:ml-[62px] gap-4 grid grow grid-rows-[auto_1fr] p-4 max-w-[2000px]">
             <Searchbar />
             <main className="relative overflow-auto p-3">
               {children}

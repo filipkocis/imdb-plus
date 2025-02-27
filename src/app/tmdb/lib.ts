@@ -171,6 +171,33 @@ export class TMDB {
       return Res.error(error.message)
     }
   }
+
+  static async getRecommendations(id: number, type: "movie" | "tv"): Promise<Result<Paginated<Movie | TvShow>>> {
+    try {
+      const response = await fetch(`${TMDB.BASE}/${type}/${id}/recommendations`, TMDB.options('GET'))  
+      const json = await response.json();
+      if (json.success === false) throw new Error(json.status_message);
+      return Res.ok(json);
+    } catch (error: any) {
+      return Res.error(error.message);
+    }
+  }
+
+  static async getSimilar(id: number, type: "movie" | "tv"): Promise<Result<Paginated<Movie | TvShow>>> {
+    try {
+      const response = await fetch(`${TMDB.BASE}/${type}/${id}/similar`, TMDB.options('GET'))  
+      const json = await response.json();
+      if (json.success === false) throw new Error(json.status_message);
+
+      for (const media of json.results) {
+        media.media_type = type;
+      }
+
+      return Res.ok(json);
+    } catch (error: any) {
+      return Res.error(error.message);
+    }
+  }
 }
 
 export type SearchResult = Movie | TvShow | Person
@@ -232,7 +259,7 @@ export type MovieDetails = {
   original_title: string
   overview: string
   popularity: number
-  poster_path: string
+  poster_path: string | null
   production_companies: ProductionCompany[]
   production_countries: ProductionCountry[]
   release_date: string
@@ -289,7 +316,7 @@ export type TvDetails = {
   original_name: string
   overview: string
   popularity: number
-  poster_path: string
+  poster_path: string | null
   production_companies: ProductionCompany[]
   production_countries: ProductionCountry[]
   seasons: {

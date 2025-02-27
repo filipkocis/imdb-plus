@@ -1,8 +1,10 @@
 import ErrorDiv from "@/app/components/ErrorDiv"
 import { parseDate } from "@/app/components/result/ResultBlock"
 import WatchButton from "@/app/components/WatchButton"
+import SuggestedSmallResults from "@/app/components/wrapper/SuggestedSmallResults"
 import { Cast, MovieDetails, TMDB, TvDetails } from "@/app/tmdb/lib"
 import { LucideCalendar, LucideClock, LucideGlobe } from "lucide-react"
+import Unavailable from "@/assets/unavailable.png"
 import Image from "next/image"
 import Link from "next/link"
 import { CiStar } from "react-icons/ci"
@@ -12,9 +14,13 @@ export default async function MediaPage({ type, id }: { type: "movie" | "tv", id
   const trailer = await TMDB.getTrailer(id, type)
   const creditsResult = await TMDB.getCredits(id, type)
 
+  const recommendationsResult = await TMDB.getRecommendations(id, type)
+  const similarResult = await TMDB.getSimilar(id, type)
+
   if (detailsResult.error !== undefined) return <ErrorDiv message={detailsResult.error} />
   if (creditsResult.error !== undefined) return <ErrorDiv message={creditsResult.error} />
   let details = detailsResult.ok
+  const plural = type === "movie" ? "Movies" : "TV Shows"
 
   let title, runtime, release_date;
   if (type === "movie") {
@@ -34,30 +40,30 @@ export default async function MediaPage({ type, id }: { type: "movie" | "tv", id
   return (
     <div className="flex flex-col gap-8">
       <div className="grid lg:grid-cols-[2fr_1fr] gap-4">
-        <div className="relative flex flex-col lg:flex-row items-center gap-6 p-6 rounded-2xl overflow-hidden bg-gradient-to-t from-transparent to-neutral-800/80">
+        <div className="relative flex flex-col lg:flex-row max-lg:items-center items-start gap-6 p-6 rounded-2xl overflow-hidden bg-neutral-800/80  from-transparent to-neutral-800/80">
           <div className="absolute top-4 right-4 z-10 w-[52px] h-[52px] flex flex-col items-center justify-center rounded-full bg-yellow-500/30">
             <CiStar size={18} className="text-contrast" stroke="currentColor" strokeWidth={2} />
             <p className="text-contrast font-semibold">{details.vote_average.toFixed(1)}</p>
           </div>
 
           <Image 
-            src={TMDB.poster(details.poster_path, "/gradient.png", "w500")} 
+            src={details.poster_path ? TMDB.poster(details.poster_path, "/gradient.png", "w500") : Unavailable} 
             alt={title} 
-            className="aspect-[2/3] rounded-2xl object-cover" 
+            className="aspect-[2/3] w-[250px] h-[375px] rounded-2xl" 
             width={250}
             height={375}
           />
 
           <div className="h-full flex flex-col justify-between gap-4">
             <div>
-              <div className="flex items-center gap-4 flex-center flex-wrap">
+              <div className="flex items-center gap-x-4 flex-center flex-wrap">
                 <h1 className="text-4xl font-bold">{title}</h1> 
                 <p className="rounded-full bg-yellow-400 text-black px-3 text-sm py-1">{details.status}</p>
               </div>
               <p className="text-neutral-400 text-sm">{details.tagline}</p>
             </div>
 
-            <div className="flex gap-4 gap-y-4 flex-wrap [&>*]:flex [&>*]:items-center [&>*]:gap-2">
+            <div className="flex gap-4 flex-wrap [&>*]:flex [&>*]:items-center [&>*]:gap-2">
               {type === "movie" && (
                 <p>
                   <LucideClock size={32} /> 
@@ -90,7 +96,7 @@ export default async function MediaPage({ type, id }: { type: "movie" | "tv", id
           </div>
         </div>
 
-        <div className="flex flex-col rounded-2xl overflow-hidden bg-gradient-to-t from-transparent to-neutral-800/80">
+        <div className="flex flex-col rounded-2xl overflow-hidden bg-neutral-800/80 from-transparent to-neutral-800/80">
           <p className="bg-secondary font-semibold px-4 py-2">Actors</p> 
           <div className="max-h-96 overflow-x-auto flex flex-col">
             {creditsResult.ok.cast.map(cast => (
@@ -100,6 +106,8 @@ export default async function MediaPage({ type, id }: { type: "movie" | "tv", id
         </div>
       </div>
 
+      <SuggestedSmallResults result={recommendationsResult} href={`/recommended/${type}/${id}`} title={`Recommended ${plural}`} />
+      <SuggestedSmallResults result={similarResult} href={`/similar/${type}/${id}`} title={`Similar ${plural}`} />
     </div>
   )
 }
@@ -113,10 +121,10 @@ function parseMinutes(mins: number) {
 function CastBlock({ cast }: { cast: Cast }) {
   return (
     <Link className="hover:bg-secondary px-4 py-2 transition-colors flex items-center gap-4" href={`https://www.imdb.com/name/nm${cast.cast_id}/?ref_=tt_cst_t_1`}>
-      <Image 
+      <img 
         src={TMDB.poster(cast.profile_path, "/gradient.png", "w92")} 
         alt={cast.name} 
-        className="w-16 h-16 rounded-full object-cover" 
+        className="relative w-16 h-16 rounded-full object-center object-cover overflow-hidden"
         width={64}
         height={64}
       /> 

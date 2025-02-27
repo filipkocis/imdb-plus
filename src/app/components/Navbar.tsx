@@ -4,7 +4,7 @@ import Logo from "@/assets/logo.png"
 
 export default function Navbar() {
   return (
-    <div className="z-10 absolute bg-background max-md:bottom-0 flex md:flex-col gap-2 max-md:border-t-2 md:border-r-2 border-secondary max-md:w-full md:h-full">
+    <div className="z-10 absolute md:left-0 bg-background max-md:bottom-0 flex md:flex-col gap-2 max-md:border-t-2 md:border-r-2 border-secondary max-md:w-full md:h-full">
       <div className="max-md:hidden items-center bg-secondary justify-center flex py-4">
         <Image src={Logo} alt="IMDb+" width={50} />
       </div>
