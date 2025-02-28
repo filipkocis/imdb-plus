@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
 
 export type PlayerOptions = {
   id: string
@@ -17,7 +17,7 @@ export type PlayerOptions = {
 
 type PlayerProviderValue = {
   player: PlayerOptions | null
-  setPlayer: (player: PlayerOptions | null) => void
+  setPlayer: Dispatch<SetStateAction<PlayerOptions | null>>
 }
 
 export const PlayerContext = createContext<PlayerProviderValue>({

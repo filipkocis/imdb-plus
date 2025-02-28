@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { PageWrapper } from "./components/wrapper/PageWrapper";
 import TrendingSmallResults from "./components/wrapper/TrendingSmallResults";
 import { Res, TMDB } from "./tmdb/lib";

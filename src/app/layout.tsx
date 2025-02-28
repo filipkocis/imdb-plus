@@ -4,7 +4,7 @@ import "./globals.css";
 import { Searchbar } from "./components/Searchbar";
 import Navbar from "./components/Navbar";
 import PlayerProvider from "./context/PlayerContext";
-import Player from "./components/player/Player";
+import PlayerOverlay from "./components/player/PlayerOverlay";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <PlayerProvider>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased relative w-screen h-[100dvh] overflow-hidden flex justify-center`}>
-          <Player />
+          <PlayerOverlay />
           <Navbar />
           <div className="md:ml-[62px] gap-4 grid grow grid-rows-[auto_1fr] p-4 max-w-[2000px]">
             <Searchbar />
