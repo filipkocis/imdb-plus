@@ -5,12 +5,15 @@ import { createContext, Dispatch, SetStateAction, useContext, useState } from "r
 export type PlayerOptions = {
   id: string
   type: 'youtube'
+  name: string
 } | {
   id: string
   type: 'movie'
+  name: string
 } | {
   id: string
   type: 'tv'
+  name: string
   season: number
   episode: number
 }

@@ -188,7 +188,7 @@ export class TMDB {
     }
   }
 
-  static async getTrailer(id: number, type: "movie" | "tv", fullLink: boolean = false): Promise<Result<string>> {
+  static async getTrailer(id: number, type: "movie" | "tv", fullLink: boolean = false): Promise<Result<{ name: string, link: string}>> {
     try {
       const videos = await TMDB.getVideos(id, type);
       if (videos.error !== undefined) return Res.error(videos.error);
@@ -205,8 +205,11 @@ export class TMDB {
         });
 
       if (filtered.length) {
-        if (fullLink) return Res.ok(`https://www.youtube.com/watch?v=${filtered[0].key}`);
-        else return Res.ok(filtered[0].key);
+        const response = { name: filtered[0].name, link: filtered[0].key}
+        if (fullLink) {
+          response.link = `https://www.youtube.com/watch?v=${filtered[0].key}`
+        }
+        return Res.ok(response);
       }
       return Res.error("No trailer found");
     } catch (error: any) {

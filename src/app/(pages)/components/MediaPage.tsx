@@ -92,8 +92,8 @@ export default async function MediaPage({ type, id }: { type: "movie" | "tv", id
             </div>
 
             <div className="flex gap-4">
-              <WatchButton type="youtube" id={trailer.ok ? trailer.ok : "#"} />
-              <WatchButton type={type} id={`${id}`} />
+              <WatchButton name={trailer.ok?.name || "Trailer"} type="youtube" id={trailer.ok ? trailer.ok.link : "#"} />
+              <WatchButton name={title} type={type} id={`${id}`} />
             </div>
           </div>
         </div>
