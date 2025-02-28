@@ -8,6 +8,8 @@ import Unavailable from "@/assets/unavailable.png"
 import Image from "next/image"
 import Link from "next/link"
 import { CiStar } from "react-icons/ci"
+import { Rating } from "./Rating"
+import { ImdbRating } from "./ImdbRating"
 
 export default async function MediaPage({ type, id }: { type: "movie" | "tv", id: number }) {
   const detailsResult = type === "movie" ? await TMDB.getMovieDetails(id) : await TMDB.getTvDetails(id)
@@ -22,29 +24,29 @@ export default async function MediaPage({ type, id }: { type: "movie" | "tv", id
   let details = detailsResult.ok
   const plural = type === "movie" ? "Movies" : "TV Shows"
 
-  let title, runtime, release_date;
+  let title, runtime, release_date, imdb_id;
   if (type === "movie") {
     details = details as MovieDetails
     title = details.title
     runtime = details.runtime
     release_date = details.release_date
-    console.log(details)
+    imdb_id = details.imdb_id
+    // console.log(details)
   } else {
     details = details as TvDetails
     title = details.name
-    console.log(details)
     runtime = details.episode_run_time.reduce((a, b) => a + b, 0) / details.episode_run_time.length
     release_date = details.first_air_date
+    imdb_id = details.id + ''
+    // console.log(details)
   }
 
   return (
     <div className="flex flex-col gap-8">
       <div className="grid lg:grid-cols-[2fr_1fr] gap-4">
         <div className="relative flex flex-col lg:flex-row max-lg:items-center items-start gap-6 p-6 rounded-2xl overflow-hidden bg-neutral-800/80  from-transparent to-neutral-800/80">
-          <div className="absolute top-4 right-4 z-10 w-[52px] h-[52px] flex flex-col items-center justify-center rounded-full bg-yellow-500/30">
-            <CiStar size={18} className="text-contrast" stroke="currentColor" strokeWidth={2} />
-            <p className="text-contrast font-semibold">{details.vote_average.toFixed(1)}</p>
-          </div>
+          <Rating size={18} strokeWidth={2} value={details.vote_average} className="top-4" Icon={CiStar} />
+          <ImdbRating type={type} size={26} strokeWidth={0} className="top-[84px] [&>p]:-mt-1 fade-in" id={imdb_id} />
 
           <Image 
             src={details.poster_path ? TMDB.poster(details.poster_path, "/gradient.png", "w500") : Unavailable} 
@@ -96,7 +98,7 @@ export default async function MediaPage({ type, id }: { type: "movie" | "tv", id
           </div>
         </div>
 
-        <div className="flex flex-col rounded-2xl overflow-hidden bg-neutral-800/80 from-transparent to-neutral-800/80">
+        <div className="h-min flex flex-col rounded-2xl overflow-hidden bg-neutral-800/80 from-transparent to-neutral-800/80">
           <p className="bg-secondary font-semibold px-4 py-2">Actors</p> 
           <div className="max-h-96 overflow-x-auto flex flex-col">
             {creditsResult.ok.cast.map(cast => (

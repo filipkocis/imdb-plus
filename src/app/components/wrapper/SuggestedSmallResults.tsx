@@ -14,7 +14,7 @@ export default function SuggestedSmallResults({ result, href, title }: { result:
         <div className="overflow-x-auto">
             <BlocksWrapper small>
               {result.ok.results.map(item => (
-                <div key={item.id} className="aspect-[2/3] w-[250px]">
+                <div key={item.id} className="aspect-[2/3] w-[230px]">
                   <ResultBlock item={item} />
                 </div>
               ))}

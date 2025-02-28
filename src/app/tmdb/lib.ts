@@ -1,17 +1,30 @@
 import { env } from "process";
+import { FETCH_CACHE_OPTIONS } from "../utils/utils";
 
 export class TMDB {
   private static API = env.TMDB_API;
   private static BASE = 'https://api.themoviedb.org/3'
 
-  private static options(method: 'GET' | 'POST' | 'PUT' | 'DELETE') {
+  private static options(method: 'GET' | 'POST' | 'PUT' | 'DELETE'): RequestInit {
     return {
       method,
       headers: {
         Authorization: `Bearer ${TMDB.API}`,
         Accept: 'application/json',
       },
+      ...FETCH_CACHE_OPTIONS
     };
+  }
+
+  static async externalTvShowIDs(id: string | number): Promise<Result<TvShowIDs>> {
+    try {
+      const response = await fetch(`${TMDB.BASE}/tv/${id}/external_ids`, TMDB.options('GET'));
+      const json = await response.json();
+      if (json.success === false) throw new Error(json.status_message);
+      return Res.ok(json);
+    } catch (error: any) {
+      return Res.error(error.message);
+    }
   }
 
   static poster(path: string | null, fallback: string, size: string = "w500") {
@@ -431,4 +444,17 @@ export type Video = {
   official: boolean
   published_at: string
   id: string
+}
+
+export type TvShowIDs = {
+  id: number
+  imdb_id: string | null
+  freebase_mid: string | null
+  freebase_id: string | null
+  tvdb_id: number
+  tvrage_id: number
+  wikidata_id: string | null
+  facebook_id: string | null
+  instagram_id: string | null
+  twitter_id: string | null
 }
