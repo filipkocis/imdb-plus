@@ -15,7 +15,7 @@ export default function PlayerSwitch(
     className?: string 
   }
 ) {
-  const title = "Moviename"
+  const isTvPlayer = player.type === 'tv';
 
   const handleClick = () => {
     setServer?.(server => (server + 1) % SERVERS.length);
@@ -33,15 +33,19 @@ export default function PlayerSwitch(
   }
 
   return (
-    <div className={cn("absolute left-0 right-0 top-4 rounded-xl border border-secondary bg-black/10 backdrop-blur-3xl p-4 justify-self-center grid grid-cols-2 gap-4", className)}>
-      <p className="col-start-1 col-end-3 text-center text-sm font-semibold">{title}</p>
-      {player.type === 'tv' && (
+    <div className={cn(
+      "absolute left-0 right-0 top-4 rounded-xl border border-secondary bg-black/10 backdrop-blur-3xl p-4 justify-self-center grid gap-4", 
+      isTvPlayer ? "grid-cols-2" : "",
+      className
+    )}>
+      <p className={cn("text-center text-sm font-semibold", isTvPlayer && "col-start-1 col-end-3")}>{player.name}</p>
+      {isTvPlayer && (
         <button onClick={handleEpisodeClick} className="px-6 py-2 rounded-lg bg-secondary flex flex-col">
           <p className="text-[0.7rem] text-contrast uppercase">Episode</p>
           <p className="text-sm font-semibold uppercase">Episode {player.episode}</p>
         </button>
       )}
-      <button onClick={handleClick} className={cn("px-6 py-2 rounded-lg bg-secondary flex flex-col", player.type === 'movie' && "col-start-1 col-end-3")}>
+      <button onClick={handleClick} className="px-6 py-2 rounded-lg bg-secondary flex flex-col">
         <p className="text-[0.7rem] text-contrast uppercase">Player</p>
         <p className="text-sm font-semibold uppercase">Server {server + 1}</p>
       </button>
