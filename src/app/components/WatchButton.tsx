@@ -1,16 +1,17 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { PlayerOptions, usePlayer } from "../context/PlayerContext"
+import { usePlayer } from "../context/PlayerContext"
 import { FaPlay } from "react-icons/fa"
 import { cn } from "../utils/merge"
 
-export default function WatchButton(options: PlayerOptions) {
+export default function WatchButton({ type, id }: { type: "movie" | "tv" | "youtube", id: string  }) {
   const { setPlayer } = usePlayer()
-  const trailer = options.type === "youtube"
+  const trailer = type === "youtube"
 
   const handleClick = () => {
-      setPlayer(options)
+    if (type === "tv") setPlayer({ type, id, episode: 1, season: 1 });
+    else setPlayer({ type, id });
   }
 
   return (
