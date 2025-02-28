@@ -16,6 +16,35 @@ export class TMDB {
     };
   }
 
+  static async listGenres(type: "movie" | "tv"): Promise<Result<Genre[]>> {
+    try {
+      const response = await fetch(`${TMDB.BASE}/genre/${type}/list`, TMDB.options('GET'));
+      const json = await response.json();
+      if (json.success === false) throw new Error(json.status_message);
+      return Res.ok(json);
+    } catch (error: any) {
+      return Res.error(error.message);
+    }
+  }
+
+  static async listAllGenres(): Promise<Result<Genre[]>> {
+    try {
+      const movieGenres = await TMDB.listGenres("movie");
+      const tvGenres = await TMDB.listGenres("tv");
+
+      if (movieGenres.error !== undefined || tvGenres.error !== undefined) {
+        return Res.error(movieGenres.error || tvGenres.error || "An error occurred");
+      }
+      
+      const genres = movieGenres.ok.concat(tvGenres.ok)
+        .filter((genre, index, self) => self.findIndex(g => g.id === genre.id) === index); 
+
+      return Res.ok(genres)
+    } catch (error: any) {
+      return Res.error(error.message)
+    }
+  }
+
   static async externalTvShowIDs(id: string | number): Promise<Result<TvShowIDs>> {
     try {
       const response = await fetch(`${TMDB.BASE}/tv/${id}/external_ids`, TMDB.options('GET'));
@@ -233,7 +262,7 @@ export type Movie = {
   vote_count: number
 }
 
-type Genre = {
+export type Genre = {
   id: number
   name: string
 }
@@ -382,6 +411,14 @@ export class Res {
 
   static error(error: string) {
     return { ok: undefined, error };
+  }
+
+  public static isOk<T>(result: Result<T>): result is Result<T> & { ok: NonNullable<T> } {
+    return result.ok !== undefined;
+  }
+
+  public static isError<T>(result: Result<T>): result is Result<T> & { error: string } {
+    return result.error !== undefined;
   }
 }
 

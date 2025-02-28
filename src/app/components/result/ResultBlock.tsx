@@ -37,9 +37,7 @@ export default function ResultBlock({ item, className }: { item: SearchResult, c
         </div>
       )}
 
-      <div className="flex group relative contain-layout bg-secondary" style={{
-        maskImage: "linear-gradient(to bottom, black, transparent",
-      }}>
+      <div className="flex group relative contain-layout bg-secondary gradient-mask">
         <Image 
           className="-z-10 group-hover:opacity-85 w-full h-full grow aspect-[2/3] overflow-hidden rounded-2xl" 
           src={posterPath ? TMDB.poster(posterPath, "", "w500") : UnavailablePoster} 
