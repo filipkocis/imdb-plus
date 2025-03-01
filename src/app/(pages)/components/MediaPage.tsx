@@ -108,6 +108,15 @@ export default async function MediaPage({ type, id }: { type: "movie" | "tv", id
         </div>
       </div>
 
+      {type === "tv" && (
+        <SeasonsBlock 
+          current={props.currentSeason} 
+          seasons={(details as TvDetails).seasons} 
+          showId={id} 
+          showName={title}
+        />
+      )}
+
       <SuggestedSmallResults result={recommendationsResult} href={`/recommended/${type}/${id}`} title={`Recommended ${plural}`} />
       <SuggestedSmallResults result={similarResult} href={`/similar/${type}/${id}`} title={`Similar ${plural}`} />
     </div>

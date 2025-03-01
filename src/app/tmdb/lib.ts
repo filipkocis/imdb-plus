@@ -16,6 +16,17 @@ export class TMDB {
     };
   }
 
+  static async getSeasonDetails(series_id: number, season_number: number): Promise<Result<SeasonDetails>> {
+    try {
+      const response = await fetch(`${TMDB.BASE}/tv/${series_id}/season/${season_number}`, TMDB.options('GET'));
+      const json = await response.json();
+      if (json.success === false) throw new Error(json.status_message);
+      return Res.ok(json);
+    } catch (error: any) {
+      return Res.error(error.message);
+    }
+  }
+
   static async listGenres(type: "movie" | "tv"): Promise<Result<Genre[]>> {
     try {
       const response = await fetch(`${TMDB.BASE}/genre/${type}/list`, TMDB.options('GET'));
@@ -337,20 +348,7 @@ export type TvDetails = {
   in_production: boolean
   languages: string[]
   last_air_date: string
-  last_episode_to_air: {
-    id: number
-    name: string
-    overview: string
-    vote_average: number
-    vote_count: number
-    air_date: string
-    episode_number: number
-    production_code: string
-    runtime: number
-    season_number: number
-    show_id: number
-    still_path: string
-  }
+  last_episode_to_air: EpisodeBase
   name: string
   next_episode_to_air: string
   networks: Network[]
@@ -364,22 +362,50 @@ export type TvDetails = {
   poster_path: string | null
   production_companies: ProductionCompany[]
   production_countries: ProductionCountry[]
-  seasons: {
-    air_date: string
+  seasons: (SeasonBase & {
     episode_count: number
-    id: number
-    name: string
-    overview: string
-    poster_path: string
-    season_number: number
-    vote_average: number
-  }[]
+  })[]
   spoken_languages: SpokenLanguage[]
   status: string
   tagline: string
   type: string
   vote_average: number
   vote_count: number
+}
+
+export type SeasonBase = {
+  air_date: string
+  id: number
+  name: string
+  overview: string
+  poster_path: string
+  season_number: number
+  vote_average: number
+}
+
+export type SeasonDetails = SeasonBase & {
+  _id: string
+  episodes: EpisodeBase[]
+}
+
+export type EpisodeBase = {
+  air_date: string
+  episode_number: number
+  id: number
+  name: string
+  overview: string
+  production_code: string
+  runtime: number | null
+  season_number: number
+  show_id: number
+  still_path: string | null
+  vote_average: number
+  vote_count: number
+}
+
+export type Episode = EpisodeBase & {
+  crew: Crew[]
+  guest_stars: GuestStar[]
 }
 
 export type TvShow = {
@@ -457,6 +483,12 @@ export type Person = PersonBase & {
 
 export type Cast = PersonBase & {
   cast_id: number
+  character: string
+  credit_id: string
+  order: number
+}
+
+export type GuestStar = PersonBase & {
   character: string
   credit_id: string
   order: number
