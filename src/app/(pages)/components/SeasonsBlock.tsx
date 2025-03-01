@@ -35,6 +35,7 @@ export default async function SeasonsBlock({ seasons, current, showId, showName 
           <WatchEpisodeButton
             key={episode.id}
             episode={episode.episode_number}
+            episodeCount={seasonDetails.ok.episodes.length}
             season={current}
             id={showId.toString()} 
             name={showName}

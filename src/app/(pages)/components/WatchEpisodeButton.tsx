@@ -7,6 +7,7 @@ type WatchButtonProps = {
   name: string
   season: number
   episode: number
+  episodeCount: number
   children: React.ReactNode
   className?: string
 }

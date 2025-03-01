@@ -15,6 +15,7 @@ type WatchButtonProps = {
   name: string
   season: number
   episode: number
+  episodeCount: number
 }
 
 export default function WatchButton(props: WatchButtonProps) {

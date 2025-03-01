@@ -107,8 +107,12 @@ export default async function MediaPage(props: MediaPageProps) {
             <div className="flex gap-4">
               <WatchButton name={trailer.ok?.name || "Trailer"} type="youtube" id={trailer.ok ? trailer.ok.link : "#"} />
               <WatchButton name={title} id={`${id}`} {...(type === "tv" ? 
-                  { type: "tv", season: props.currentSeason, episode: 1 } : 
-                  { type: "movie" }
+                  { 
+                    type: "tv", 
+                    season: props.currentSeason, 
+                    episode: 1, 
+                    episodeCount: (details as TvDetails).seasons.find(s => s.season_number == props.currentSeason)?.episode_count || 0 
+                  } : { type: "movie" }
                 )} 
               />
             </div>

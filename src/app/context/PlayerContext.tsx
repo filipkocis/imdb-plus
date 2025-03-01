@@ -16,6 +16,7 @@ export type PlayerOptions = {
   name: string
   season: number
   episode: number
+  episodeCount: number
 }
 
 type PlayerProviderValue = {
