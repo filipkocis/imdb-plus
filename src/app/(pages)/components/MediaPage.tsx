@@ -10,8 +10,21 @@ import Link from "next/link"
 import { CiStar } from "react-icons/ci"
 import { Rating } from "./Rating"
 import { ImdbRating } from "./ImdbRating"
+import SeasonsBlock from "./SeasonsBlock"
 
-export default async function MediaPage({ type, id }: { type: "movie" | "tv", id: number }) {
+type MediaPageProps = {
+  type: "movie"
+  id: number
+} | {
+  type: "tv"
+  id: number
+  currentSeason: number
+}
+
+export default async function MediaPage(props: MediaPageProps) {
+  const type = props.type
+  const id = props.id
+
   const detailsResult = type === "movie" ? await TMDB.getMovieDetails(id) : await TMDB.getTvDetails(id)
   const trailer = await TMDB.getTrailer(id, type)
   const creditsResult = await TMDB.getCredits(id, type)
@@ -31,14 +44,12 @@ export default async function MediaPage({ type, id }: { type: "movie" | "tv", id
     runtime = details.runtime
     release_date = details.release_date
     imdb_id = details.imdb_id
-    // console.log(details)
   } else {
     details = details as TvDetails
     title = details.name
     runtime = details.episode_run_time.reduce((a, b) => a + b, 0) / details.episode_run_time.length
     release_date = details.first_air_date
     imdb_id = details.id + ''
-    // console.log(details)
   }
 
   return (
@@ -83,7 +94,9 @@ export default async function MediaPage({ type, id }: { type: "movie" | "tv", id
             </div>
 
             <div className="flex flex-col gap-2">
-              <p className="text-neutral-400">{details.overview}</p>
+              <p className="text-neutral-400">{details.overview || (
+                  <span className="italic">No overview available</span>
+              )}</p>
               <div className="flex gap-1 flex-wrap">
                 {details.genres.map(genre => (
                   <p key={genre.id} className="bg-secondary px-3 py-1 rounded-full text-sm">{genre.name}</p>
@@ -93,7 +106,11 @@ export default async function MediaPage({ type, id }: { type: "movie" | "tv", id
 
             <div className="flex gap-4">
               <WatchButton name={trailer.ok?.name || "Trailer"} type="youtube" id={trailer.ok ? trailer.ok.link : "#"} />
-              <WatchButton name={title} type={type} id={`${id}`} />
+              <WatchButton name={title} id={`${id}`} {...(type === "tv" ? 
+                  { type: "tv", season: props.currentSeason, episode: 1 } : 
+                  { type: "movie" }
+                )} 
+              />
             </div>
           </div>
         </div>

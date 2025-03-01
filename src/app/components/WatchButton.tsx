@@ -5,13 +5,24 @@ import { usePlayer } from "../context/PlayerContext"
 import { FaPlay } from "react-icons/fa"
 import { cn } from "../utils/merge"
 
-export default function WatchButton({ type, id, name }: { type: "movie" | "tv" | "youtube", id: string, name: string }) {
+type WatchButtonProps = {
+  type: "movie" | "youtube"
+  id: string
+  name: string
+} | {
+  type: "tv"
+  id: string
+  name: string
+  season: number
+  episode: number
+}
+
+export default function WatchButton(props: WatchButtonProps) {
   const { setPlayer } = usePlayer()
-  const trailer = type === "youtube"
+  const trailer = props.type === "youtube"
 
   const handleClick = () => {
-    if (type === "tv") setPlayer({ type, id, name, episode: 1, season: 1 });
-    else setPlayer({ type, id, name });
+    setPlayer(props)
   }
 
   return (
