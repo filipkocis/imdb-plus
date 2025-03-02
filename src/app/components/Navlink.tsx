@@ -7,11 +7,13 @@ import { TbMovie } from "react-icons/tb";
 import { FaTv } from "react-icons/fa";
 import { LuSearch } from "react-icons/lu";
 import { AiOutlineHome } from "react-icons/ai";
+import { SlFire } from "react-icons/sl";
 
 const ICONS = {
   home: AiOutlineHome,
   movie: TbMovie,
   tv: FaTv,
+  trending: SlFire,
   search: LuSearch, 
 }
 

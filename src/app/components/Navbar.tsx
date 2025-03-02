@@ -13,6 +13,7 @@ export default function Navbar() {
           <NavLink href="/" icon="home" />
           <NavLink href="/movie" icon="movie" />
           <NavLink href="/tv" icon="tv" />
+          <NavLink href="/trending" icon="trending" />
           <NavLink href="/search" icon="search" />
         </nav>
       </div>

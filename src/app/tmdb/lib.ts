@@ -60,6 +60,10 @@ export class TMDB {
     return TMDB.fetch(`${TMDB.BASE}/search/multi?query=${query}&include_adult=false&language=en-US&page=${page}`)
   }
 
+  static async getTrending(type: "movie" | "tv" | "person" | "all", time: "day" | "week", page: number = 1): Promise<Result<Paginated<SearchResult>>> {
+    return TMDB.fetch(`${TMDB.BASE}/trending/${type}/${time}?page=${page}`)
+  }
+
   static async getTrendingMovies(time: "day" | "week", page: number = 1): Promise<Result<Paginated<Movie>>> {
     return TMDB.fetch(`${TMDB.BASE}/trending/movie/${time}?page=${page}`)
   }
