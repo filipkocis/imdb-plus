@@ -1,15 +1,18 @@
 import { PageWrapper } from "./components/wrapper/PageWrapper";
-import TrendingSmallResults from "./components/wrapper/TrendingSmallResults";
 import { Res, TMDB } from "./tmdb/lib";
 import Slider from "./components/home/Slider";
+import HomepageSmallResults from "./components/wrapper/HomepageSmallResults";
 
 export default async function Home() {
   const genresResult = await TMDB.listGenres("movie");
   const popularResult = await TMDB.getMovieLists("popularity");
   if (Res.isError(genresResult) || Res.isError(popularResult)) return null;
 
-  const movieResult = await TMDB.getTrendingMovies("week");
-  const tvResult = await TMDB.getTrendingTV("week");
+  const trendingMovieResult = await TMDB.getTrendingMovies("week");
+  const trendingTvResult = await TMDB.getTrendingTV("week");
+
+  const topMovieResult = await TMDB.getMovieLists("rating");
+  const topTvResult = await TMDB.getTvLists("rating");
 
   return (
     <PageWrapper className="grid-rows-[auto] gap-20">
@@ -22,8 +25,10 @@ export default async function Home() {
         </div>
       </div>
 
-      <TrendingSmallResults result={movieResult} href="/trending/?t=movie" title="Trending Movies" /> 
-      <TrendingSmallResults result={tvResult} href="/trending/?t=tv" title="Trending TV Shows" /> 
+      <HomepageSmallResults result={trendingMovieResult} href="/trending/?t=movie" title="Trending Movies" /> 
+      <HomepageSmallResults result={trendingTvResult} href="/trending/?t=tv" title="Trending TV Shows" /> 
+      <HomepageSmallResults result={topMovieResult} href="/movie/?f=rating" title="Top Rated Movies" /> 
+      <HomepageSmallResults result={topTvResult} href="/tv/?f=rating" title="Top Rated Series" /> 
     </PageWrapper>
   );
 }

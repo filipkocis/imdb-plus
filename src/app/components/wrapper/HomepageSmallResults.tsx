@@ -27,7 +27,7 @@ function handleResize(containerWidth: number, windowWidth: number) {
   return width
 }
 
-export default function TrendingSmallResults({ result, href, title }: { result: Result<Paginated<Movie | TvShow>>, href: string, title: string }) {
+export default function HomepageSmallResults({ result, href, title }: { result: Result<Paginated<Movie | TvShow>>, href: string, title: string }) {
   const windowSize = useWindowSize(10)
   const containerRef = useRef<HTMLDivElement>(null)
   const [computedWidth, setComputedWidth] = useState(250)
