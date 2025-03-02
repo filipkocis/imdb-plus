@@ -33,7 +33,7 @@ export default function EpisodeBlock({ episode, episodeCount, currentSeason, sho
               <p className="">{episode.vote_average.toFixed(1)}</p>
               <p className="text-white text-sm">({episode.vote_count})</p>
             </div>
-            <p className="text-sm text-white/70">{episode.runtime}min</p>
+            <p className="text-sm text-white/70">{episode.runtime === null ? null : episode.runtime + "min"}</p>
             <p className="text-sm text-white/70">{parseDate(episode.air_date)}</p>
           </div>
         </div>

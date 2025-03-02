@@ -42,7 +42,7 @@ export default function PageSelect({ searchParam, defaultValue, values, label }:
       }}
     >
       <SelectTrigger className="w-[150px]">
-        <p className="grow uppercase">{hasChanged.current ? selectedOption : label}</p>
+        <p className="grow uppercase">{hasChanged.current ? values.find(v => v.value === selectedOption)?.name || label : label}</p>
       </SelectTrigger>
       <SelectContent className="border-none">
         <SelectGroup>
