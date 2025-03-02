@@ -17,25 +17,11 @@ export class TMDB {
   }
 
   static async getSeasonDetails(series_id: number, season_number: number): Promise<Result<SeasonDetails>> {
-    try {
-      const response = await fetch(`${TMDB.BASE}/tv/${series_id}/season/${season_number}`, TMDB.options('GET'));
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    return TMDB.fetch(`${TMDB.BASE}/tv/${series_id}/season/${season_number}`)
   }
 
   static async listGenres(type: "movie" | "tv"): Promise<Result<Genre[]>> {
-    try {
-      const response = await fetch(`${TMDB.BASE}/genre/${type}/list`, TMDB.options('GET'));
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    return TMDB.fetch(`${TMDB.BASE}/genre/${type}/list`)
   }
 
   static async listAllGenres(): Promise<Result<Genre[]>> {
@@ -51,20 +37,17 @@ export class TMDB {
         .filter((genre, index, self) => self.findIndex(g => g.id === genre.id) === index); 
 
       return Res.ok(genres)
-    } catch (error: any) {
-      return Res.error(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        return Res.error(error.message);
+      } else {
+        return Res.error("An error occurred");
+      }
     }
   }
 
   static async externalTvShowIDs(id: string | number): Promise<Result<TvShowIDs>> {
-    try {
-      const response = await fetch(`${TMDB.BASE}/tv/${id}/external_ids`, TMDB.options('GET'));
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    return TMDB.fetch(`${TMDB.BASE}/tv/${id}/external_ids`)
   }
 
   static poster(path: string | null, fallback: string, size: string = "w500") {
@@ -73,40 +56,16 @@ export class TMDB {
   }
 
   static async search(query: string, page: number = 1): Promise<Result<Paginated<SearchResult>>> {
-    try {
-      query = encodeURIComponent(query);
-      const response = await fetch(`${TMDB.BASE}/search/multi?query=${query}&include_adult=false&language=en-US&page=${page}`, TMDB.options('GET'));
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    query = encodeURIComponent(query);
+    return TMDB.fetch(`${TMDB.BASE}/search/multi?query=${query}&include_adult=false&language=en-US&page=${page}`)
   }
 
   static async getTrendingMovies(time: "day" | "week", page: number = 1): Promise<Result<Paginated<Movie>>> {
-    try {
-      const response = await fetch(`${TMDB.BASE}/trending/movie/${time}?page=${page}`, TMDB.options('GET'))  
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    return TMDB.fetch(`${TMDB.BASE}/trending/movie/${time}?page=${page}`)
   }
 
   static async getTrendingTV(time: "day" | "week", page: number = 1): Promise<Result<Paginated<TvShow>>> {
-    try {
-      const response = await fetch(`${TMDB.BASE}/trending/tv/${time}?page=${page}`, TMDB.options('GET'))  
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    return TMDB.fetch(`${TMDB.BASE}/trending/tv/${time}?page=${page}`)
   }
 
   public static MOVIE_LISTS = ["popularity", "rating", "playing", "upcoming"] as const;
@@ -117,19 +76,11 @@ export class TMDB {
       type === "playing" ? "now_playing" :
       "upcoming";
 
-    try {
-      const response = await fetch(`${TMDB.BASE}/movie/${endpoint}?page=${page}`, TMDB.options('GET'))  
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-
+    return TMDB.fetch(`${TMDB.BASE}/movie/${endpoint}?page=${page}`, json => {
       for (const movie of json.results) {
         movie.media_type = "movie";
       }
-
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    })
   }
 
   public static TV_LISTS = ["popularity", "rating", "airing", "on_air"] as const;
@@ -140,63 +91,27 @@ export class TMDB {
       type === "airing" ? "airing_today" :
       "on_the_air";
 
-    try {
-      const response = await fetch(`${TMDB.BASE}/tv/${endpoint}?page=${page}`, TMDB.options('GET'))  
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-      
+    return TMDB.fetch(`${TMDB.BASE}/tv/${endpoint}?page=${page}`, json => {
       for (const tv of json.results) {
         tv.media_type = "tv";
       }
-
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    })
   }
 
   static async getCredits(id: number, type: "movie" | "tv"): Promise<Result<Credits>> {
-    try {
-      const response = await fetch(`${TMDB.BASE}/${type}/${id}/credits`, TMDB.options('GET'))  
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    return TMDB.fetch(`${TMDB.BASE}/${type}/${id}/credits`)
   }
 
   static async getMovieDetails(id: number): Promise<Result<MovieDetails>> {
-    try {
-      const response = await fetch(`${TMDB.BASE}/movie/${id}`, TMDB.options('GET'))  
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    return TMDB.fetch(`${TMDB.BASE}/movie/${id}`)
   }
 
   static async getTvDetails(id: number): Promise<Result<TvDetails>> {
-    try {
-      const response = await fetch(`${TMDB.BASE}/tv/${id}`, TMDB.options('GET'))  
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    return TMDB.fetch(`${TMDB.BASE}/tv/${id}`)
   }
 
   static async getVideos(id: number, type: "movie" | "tv"): Promise<Result<Videos>> {
-    try {
-      const response = await fetch(`${TMDB.BASE}/${type}/${id}/videos`, TMDB.options('GET'))  
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    return TMDB.fetch(`${TMDB.BASE}/${type}/${id}/videos`)
   }
 
   static async getTrailer(id: number, type: "movie" | "tv", fullLink: boolean = false): Promise<Result<{ name: string, link: string}>> {
@@ -207,7 +122,7 @@ export class TMDB {
       const filtered = videos.ok.results
         .filter(video => video.site === "YouTube")
         .sort((a, b) => {
-          if (a.official !== b.official) return b.official as any - (a.official as any);
+          if (a.official !== b.official) return (b.official as unknown as number) - (a.official as unknown as number);
 
           if (a.type === "Trailer" && b.type !== "Trailer") return -1;
           if (b.type === "Trailer" && a.type !== "Trailer") return 1;
@@ -223,35 +138,40 @@ export class TMDB {
         return Res.ok(response);
       }
       return Res.error("No trailer found");
-    } catch (error: any) {
-      return Res.error(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        return Res.error(error.message);
+      } else {
+        return Res.error("An error occurred");
+      }
     }
   }
 
   static async getRecommendations(id: number, type: "movie" | "tv"): Promise<Result<Paginated<Movie | TvShow>>> {
-    try {
-      const response = await fetch(`${TMDB.BASE}/${type}/${id}/recommendations`, TMDB.options('GET'))  
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-      return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
-    }
+    return TMDB.fetch(`${TMDB.BASE}/${type}/${id}/recommendations`)
   }
 
   static async getSimilar(id: number, type: "movie" | "tv"): Promise<Result<Paginated<Movie | TvShow>>> {
-    try {
-      const response = await fetch(`${TMDB.BASE}/${type}/${id}/similar`, TMDB.options('GET'))  
-      const json = await response.json();
-      if (json.success === false) throw new Error(json.status_message);
-
+    return TMDB.fetch(`${TMDB.BASE}/${type}/${id}/similar`, json => {
       for (const media of json.results) {
         media.media_type = type;
       }
+    })
+  }
 
+  static async fetch<T>(input: string, fn?: (json: T) => void): Promise<Result<T>> {
+    try {
+      const response = await fetch(input, TMDB.options('GET'))  
+      const json = await response.json();
+      if (json.success === false) throw new Error(json.status_message);
+      if (fn) fn(json);
       return Res.ok(json);
-    } catch (error: any) {
-      return Res.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        return Res.error(error.message);
+      } else {
+        return Res.error("An error occurred");
+      }
     }
   }
 }
