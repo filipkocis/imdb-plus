@@ -13,11 +13,11 @@ export default async function Home() {
 
   return (
     <PageWrapper className="grid-rows-[auto] gap-20">
-      <div className="grid grid-cols-3 gap-8">
-        <Slider movies={popularResult.ok.results} genres={genresResult.ok} className="col-start-1 col-end-3 aspect-video">
+      <div className="flex flex-col gap-16 lg:grid lg:grid-cols-3 lg:gap-8">
+        <Slider movies={popularResult.ok.results} genres={genresResult.ok.genres} className="col-start-1 col-end-3 aspect-video">
 
         </Slider>
-        <div className="rounded-xl bg-secondary">
+        <div className="rounded-xl bg-secondary min-h-[300px]">
 
         </div>
       </div>

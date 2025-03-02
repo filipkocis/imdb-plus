@@ -29,7 +29,7 @@ export default function PlayerSwitch(
 
   return (
     <div className={cn(
-      "absolute left-0 right-0 top-4 rounded-xl border border-secondary bg-black/10 backdrop-blur-3xl p-4 justify-self-center grid gap-4", 
+      "absolute left-0 right-0 top-10 sm:top-4 rounded-xl border border-secondary bg-black/10 backdrop-blur-3xl p-2 sm:p-4 justify-self-center grid gap-2 sm:gap-4", 
       isTvPlayer ? "grid-cols-2" : "",
       className
     )}>

@@ -36,9 +36,9 @@ export default async function RootLayout({
             <Toaster theme="dark" />
             <PlayerOverlay />
             <Navbar />
-            <div className="md:ml-[62px] gap-4 grid grow grid-rows-[auto_1fr] p-4 max-w-[2000px]">
+            <div className="md:ml-[62px] gap-4 grid grow grid-rows-[auto_1fr] p-2 sm:p-4 max-w-[2000px]">
               <Topbar />
-              <main className="relative overflow-auto p-3">
+              <main className="relative overflow-auto p-3 max-md:pb-16">
                 {children}
               </main>
             </div>
