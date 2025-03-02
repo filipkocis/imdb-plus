@@ -11,7 +11,7 @@ export default function Slider({ className, movies, genres }: { className?: stri
 
   const setIndex = (direction: number) => () => {
     setMovieIndex((prev) => {
-      let next = prev + direction;
+      const next = prev + direction;
       if (next >= movies.length) return 0;
       if (next < 0) return movies.length - 1;
       return next;

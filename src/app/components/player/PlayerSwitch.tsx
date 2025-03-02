@@ -14,7 +14,7 @@ export default function PlayerSwitch(
     className?: string 
   }
 ) {
-  const serverList = useServerList();
+  const { serverList } = useServerList();
   const serverOptions = serverList.map((_, i) => ({ value: i.toString(), name: `Server ${i + 1}` }))
   const isTvPlayer = player.type === 'tv';
 

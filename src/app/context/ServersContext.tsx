@@ -1,7 +1,8 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { getServerList } from "../utils/server";
+import { toast } from "sonner";
 
 export type ServerList = Server[];
 export class Server {
@@ -16,8 +17,8 @@ export class Server {
   getTv = (id: string, season: number, episode: number) => `${this.url}/${this.tvPath(id, season, episode)}`
 }
 
-function evaluateTemplateSafe(templateStr: string, variables: Record<string, any>) {
-  return templateStr.replace(/\${(.*?)}/g, (_, key) => variables[key] || "");
+function evaluateTemplateSafe(templateStr: string, variables: Record<string, number | string>) {
+  return templateStr.replace(/\${(.*?)}/g, (_, key) => variables[key].toString() || "");
 }
 
 type ServerLike = {
@@ -26,7 +27,7 @@ type ServerLike = {
   moviePath: string,
   tvPath: string,
 }
-function parseServer(server: ServerLike): Server {
+export function parseServer(server: ServerLike): Server {
   return new Server(
     server.name,
     server.url,
@@ -35,14 +36,22 @@ function parseServer(server: ServerLike): Server {
   )
 }
 
-const bamboozleServer = new Server(
+export const bamboozleServer = new Server(
   "Bamboozle",
   "https://www.youtube.com",
   () => "/embed/xvFZjo5PgG0?autoplay=1",
   () => "/embed/xvFZjo5PgG0?autoplay=1",
 )
 
-export const ServerListContext = createContext<ServerList>([bamboozleServer])
+type ServersProviderValue = {
+  serverList: ServerList
+  setServerList: Dispatch<SetStateAction<ServerList>>
+}
+
+export const ServerListContext = createContext<ServersProviderValue>({
+  serverList: [bamboozleServer],
+  setServerList: () => {},
+})
 
 export default function ServerListProvider({ children }: { children: React.ReactNode }) {
   const [serverList, setServerList] = useState<ServerList>([bamboozleServer])
@@ -54,7 +63,7 @@ export default function ServerListProvider({ children }: { children: React.React
         if (!list.length) throw new Error("You are not a wizard, Harry.")
         else setServerList(list.map(parseServer))
       } catch (error) {
-        console.error(error)
+        toast.error((error as Error)?.message || "Uh oh!")
       }
     }
 
@@ -62,7 +71,7 @@ export default function ServerListProvider({ children }: { children: React.React
   }, [])
 
   return (
-    <ServerListContext.Provider value={serverList}>
+    <ServerListContext.Provider value={{ serverList, setServerList }}>
       {children}
     </ServerListContext.Provider>
   )

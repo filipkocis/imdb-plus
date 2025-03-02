@@ -6,7 +6,7 @@ import ResultsTopBar from "@/app/components/result/ResultsTopBar";
 import { TMDB } from "@/app/tmdb/lib";
 
 function getType(type?: string | string[]) {
-  let index = TMDB.TV_LISTS.indexOf(type + "" as any);
+  let index = TMDB.TV_LISTS.indexOf(type + "" as typeof TMDB.TV_LISTS[number]);
   if (index === -1) index = 0;
   return TMDB.TV_LISTS[index];
 }

@@ -30,9 +30,9 @@ function getPageNumbers(currentPage: number, totalPages: number, maxButtons = 5)
 
 const MAX_BUTTONS = 5;
 export default function PaginationComponent({ totalPages }: { totalPages: number }) {
+  const params = useSearchParams()
   if (totalPages < 1) return null;
 
-  const params = useSearchParams()
   const page = parseInt(params.get("p") || "1") || 1
   const pageNumbers = getPageNumbers(page, totalPages, MAX_BUTTONS);
 

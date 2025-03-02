@@ -4,7 +4,7 @@ import { PlayerOptions } from "@/app/context/PlayerContext";
 import { useServerList } from "@/app/context/ServersContext";
 
 export default function EmbeddedPlayer({ serverOption, player }: { serverOption: number, player: PlayerOptions }) {
-  const serverList = useServerList()
+  const { serverList } = useServerList()
 
   if (player.type === 'youtube') return (
     <div className="">
