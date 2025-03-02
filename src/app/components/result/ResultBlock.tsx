@@ -30,7 +30,7 @@ export default function ResultBlock({ item, className }: { item: SearchResult, c
   }
 
   return (
-    <Link href={href} className={cn("group relative flex flex-col gap-2 overflow-hidden rounded-md", className)}> 
+    <Link href={href} className={cn("group relative flex flex-col gap-2 overflow-hidden rounded-2xl", className)}> 
       {item.media_type !== 'person' && (
         <div className="flex inset-0 z-10 absolute items-center justify-center scale-[150%] opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
           <FaRegCirclePlay size={48} className="text-contrast" />

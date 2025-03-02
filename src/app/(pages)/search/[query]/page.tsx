@@ -19,7 +19,7 @@ export default async function SearchPage({ params, searchParams }: {
 
   return (
     <PageWrapper>
-      <ResultsTopBar totalPages={result.ok.total_pages}  title={`Results for "${decodeURI(query.toString())}"`} />
+      <ResultsTopBar totalPages={result.ok.total_pages} title={`Results for "${decodeURI(query.toString())}"`} buttons={[]} />
       <BlocksWrapper>
         {result.ok.results.map(item => {
           return <ResultBlock key={item.id} item={item}/>
