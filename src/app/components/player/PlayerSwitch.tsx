@@ -3,9 +3,6 @@
 import { PlayerOptions } from "@/app/context/PlayerContext";
 import { cn } from "@/app/utils/merge";
 import { Dispatch, SetStateAction } from "react";
-import { SERVERS } from "./EmbeddedPlayer";
-
-const SERVER_OPTIONS = SERVERS.map((_, i) => ({ value: i.toString(), name: `Server ${i + 1}` }))
 
 export default function PlayerSwitch(
   { player, setPlayer, server, setServer, className }: 
@@ -17,6 +14,8 @@ export default function PlayerSwitch(
     className?: string 
   }
 ) {
+  const serverList = useServerList();
+  const serverOptions = serverList.map((_, i) => ({ value: i.toString(), name: `Server ${i + 1}` }))
   const isTvPlayer = player.type === 'tv';
 
   const handleServerChange = (value: number) => {
@@ -44,7 +43,7 @@ export default function PlayerSwitch(
           offset={-1}
         />
       }
-      <Switch selected={server} setSelected={handleServerChange} options={SERVER_OPTIONS} label="Player" />
+      <Switch selected={server} setSelected={handleServerChange} options={serverOptions} label="Player" />
     </div>
   )
 }
@@ -56,6 +55,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select"
+import { useServerList } from "@/app/context/ServersContext";
 
 function Switch(
   { selected, setSelected, options, label, offset = 0 }: 
