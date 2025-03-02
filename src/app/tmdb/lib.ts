@@ -20,7 +20,7 @@ export class TMDB {
     return TMDB.fetch(`${TMDB.BASE}/tv/${series_id}/season/${season_number}`)
   }
 
-  static async listGenres(type: "movie" | "tv"): Promise<Result<Genre[]>> {
+  static async listGenres(type: "movie" | "tv"): Promise<Result<Genres>> {
     return TMDB.fetch(`${TMDB.BASE}/genre/${type}/list`)
   }
 
@@ -33,7 +33,7 @@ export class TMDB {
         return Res.error(movieGenres.error || tvGenres.error || "An error occurred");
       }
       
-      const genres = movieGenres.ok.concat(tvGenres.ok)
+      const genres = movieGenres.ok.genres.concat(tvGenres.ok.genres)
         .filter((genre, index, self) => self.findIndex(g => g.id === genre.id) === index); 
 
       return Res.ok(genres)
@@ -194,6 +194,10 @@ export type Movie = {
   video: boolean
   vote_average: number
   vote_count: number
+}
+
+export type Genres = {
+  genres: Genre[]
 }
 
 export type Genre = {
