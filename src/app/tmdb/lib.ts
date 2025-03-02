@@ -16,6 +16,24 @@ export class TMDB {
     };
   }
 
+  static async discover(type: "movie" | "tv", sort: string | null, timeWindow: [string, string] | null, genres: string | null, page: number = 1): Promise<Result<Paginated<SearchResult>>> {
+    let endpoint = `${TMDB.BASE}/discover/${type}?include_adult=false`
+    if (sort) endpoint += `&sort_by=${sort}`;
+    if (timeWindow) {
+      const param = type === "movie" ? "primary_release_date" : "first_air_date";
+      endpoint += `&${param}.gte=${timeWindow[0]}&${param}.lte=${timeWindow[1]}`;
+    }
+    if (genres) endpoint += `&with_genres=${genres}`;
+    if (page) endpoint += `&page=${page}`;
+
+    console.log(endpoint)
+    return TMDB.fetch(endpoint, json => {
+      for (const media of json.results) {
+        media.media_type = type;
+      }
+    })
+  }
+
   static async getSeasonDetails(series_id: number, season_number: number): Promise<Result<SeasonDetails>> {
     return TMDB.fetch(`${TMDB.BASE}/tv/${series_id}/season/${season_number}`)
   }
