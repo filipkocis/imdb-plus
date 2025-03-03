@@ -31,7 +31,7 @@ export default function PageSelect({ searchParam, defaultValue, values, label }:
       url.set(searchParam, selectedOption)
       router.push(`?${url.toString()}`, { scroll: false });
     }
-  }, [selectedOption])
+  }, [selectedOption, searchParam])
 
   return (
     <Select

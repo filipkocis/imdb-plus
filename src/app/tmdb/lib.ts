@@ -26,7 +26,6 @@ export class TMDB {
     if (genres) endpoint += `&with_genres=${genres}`;
     if (page) endpoint += `&page=${page}`;
 
-    console.log(endpoint)
     return TMDB.fetch(endpoint, json => {
       for (const media of json.results) {
         media.media_type = type;

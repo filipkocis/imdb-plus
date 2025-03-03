@@ -34,7 +34,7 @@ export function useWindowSize(debounceMs = 100) {
     handleResize();
     
     return () => window.removeEventListener("resize", debouncedHandleResize);
-  }, []);
+  }, [debounceMs]);
 
   return windowSize;
 }
