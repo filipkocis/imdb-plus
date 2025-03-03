@@ -2,6 +2,7 @@ import { PageWrapper } from "./components/wrapper/PageWrapper";
 import { Res, TMDB } from "./tmdb/lib";
 import MovieSlider from "./components/home/MovieSlider";
 import HomepageSmallResults from "./components/wrapper/HomepageSmallResults";
+import RevenueList from "./components/home/RevenueList";
 
 export default async function Home() {
   const genresResult = await TMDB.listGenres("movie");
@@ -22,9 +23,7 @@ export default async function Home() {
           genres={genresResult.ok.genres} 
           className="col-start-1 col-end-3 aspect-video" 
         />
-        <div className="rounded-xl bg-secondary min-h-[300px]">
-
-        </div>
+        <RevenueList />
       </div>
 
       <HomepageSmallResults result={trendingMovieResult} href="/trending/?t=movie" title="Trending Movies" /> 
