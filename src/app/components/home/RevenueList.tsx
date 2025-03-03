@@ -25,14 +25,15 @@ export default async function RevenueList() {
   )
 
   return (
-    <div className="rounded-xl bg-neutral-800 p-4 flex flex-col gap-6 aspect-[3/3.4] overflow-hidden">
-      <div>
+    <div className="rounded-xl bg-neutral-800 flex flex-col py-4 gap-6 aspect-[3/3.4] overflow-hidden">
+      <div className="px-6">
         <h2 className="font-bold">Top #10 Box Office Movies</h2>
         <p className="text-xs text-white/60">Since {formattedDate}</p>
       </div>
-      <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
-        {(result.ok?.results as Movie[]).map((movie, i) => (
-          <div key={i} className="flex gap-4 bg-black/20 p-1 rounded-lg items-center">
+      <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden px-6">
+        {(result.ok?.results as Movie[]).slice(0, 10).map((movie, i) => (
+          <div key={i} className="relative flex gap-4 bg-black/20 p-1 rounded-lg items-center">
+            <p className="w-7 h-7 flex items-center justify-center text-sm p-1 font-bold absolute -left-3 bg-neutral-900/70 backdrop-blur-3xl rounded-full">{i + 1}</p>
             <img 
               src={TMDB.poster(movie.poster_path, "/gradient.png", "w92")} 
               alt={movie.title} 
@@ -40,7 +41,7 @@ export default async function RevenueList() {
             />
             <div className="flex flex-col gap-1">
               <h3 className="text-[0.91rem] font-semibold line-clamp-1">{movie.title}</h3>
-              <div className="flex text-white/60 items-center">
+              <div className="flex text-white/60 items-center flex-wrap">
                 <div className="flex gap-1 items-center bg-neutral-800 rounded-full py-1 px-2.5">
                   <CiStar size={14} />
                   <p className="text-xs">{movie.vote_average.toFixed(1)}</p>
