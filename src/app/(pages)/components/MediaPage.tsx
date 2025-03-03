@@ -11,6 +11,8 @@ import { CiStar } from "react-icons/ci"
 import { Rating } from "./Rating"
 import { ImdbRating } from "./ImdbRating"
 import SeasonsBlock from "./SeasonsBlock"
+import { Button } from "@/components/ui/button"
+import { FaArrowUpRightFromSquare } from "react-icons/fa6"
 
 type MediaPageProps = {
   type: "movie"
@@ -49,7 +51,8 @@ export default async function MediaPage(props: MediaPageProps) {
     title = details.name
     runtime = details.episode_run_time.reduce((a, b) => a + b, 0) / details.episode_run_time.length
     release_date = details.first_air_date
-    imdb_id = details.id + ''
+    const externalIds = await TMDB.externalTvShowIDs(id)
+    imdb_id = externalIds.ok?.imdb_id || null
   }
 
   return (
@@ -57,7 +60,7 @@ export default async function MediaPage(props: MediaPageProps) {
       <div className="grid lg:grid-cols-[2fr_1fr] gap-4">
         <div className="relative flex flex-col lg:flex-row max-lg:items-center items-start gap-6 p-6 rounded-2xl overflow-hidden bg-neutral-800/80  from-transparent to-neutral-800/80">
           <Rating size={18} strokeWidth={2} value={details.vote_average} className="top-4" Icon={CiStar} />
-          <ImdbRating type={type} size={26} strokeWidth={0} className="top-[84px] [&>p]:-mt-1 fade-in" id={imdb_id} />
+          {imdb_id !== null && <ImdbRating type={type} size={26} strokeWidth={0} className="top-[84px] [&>p]:-mt-1 fade-in" id={imdb_id} />}
 
           <Image 
             src={details.poster_path ? TMDB.poster(details.poster_path, "/gradient.png", "w500") : Unavailable} 
@@ -105,6 +108,13 @@ export default async function MediaPage(props: MediaPageProps) {
             </div>
 
             <div className="flex gap-4">
+              <Button variant="default" className="font-bold" asChild>
+                <Link href={`https://www.imdb.com/title/${imdb_id}/`} referrerPolicy="no-referrer" target="_blank" rel="noopener noreferrer">
+                  <FaArrowUpRightFromSquare style={{ width: 10 }} />
+                  IMDB
+                </Link>
+              </Button>
+
               <WatchButton name={trailer.ok?.name || "Trailer"} type="youtube" id={trailer.ok ? trailer.ok.link : "#"} />
               <WatchButton name={title} id={`${id}`} {...(type === "tv" ? 
                   { 
