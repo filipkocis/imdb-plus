@@ -250,12 +250,12 @@ type SpokenLanguage = {
 export type MovieDetails = {
   adult: boolean
   backdrop_path: string | null
-  belongs_to_collection: string
+  belongs_to_collection: string | null
   budget: number
   genres: Genre[]
   homepage: string
   id: number
-  imdb_id: string
+  imdb_id: string | null
   origin_country: string[]
   original_language: string
   original_title: string
@@ -293,10 +293,10 @@ export type TvDetails = {
   id: number,
   in_production: boolean
   languages: string[]
-  last_air_date: string
-  last_episode_to_air: EpisodeBase
+  last_air_date: string | null
+  last_episode_to_air: EpisodeBase | null
   name: string
-  next_episode_to_air: string
+  next_episode_to_air: EpisodeBase | null
   networks: Network[]
   number_of_episodes: number
   number_of_seasons: number
@@ -324,7 +324,7 @@ export type SeasonBase = {
   id: number
   name: string
   overview: string
-  poster_path: string
+  poster_path: string | null
   season_number: number
   vote_average: number
 }

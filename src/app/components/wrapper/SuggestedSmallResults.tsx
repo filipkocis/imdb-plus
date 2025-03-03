@@ -19,7 +19,7 @@ export default function SuggestedSmallResults({ result, href, title }: { result:
                 </div>
               ))}
               {result.ok.results.length === 0 && (
-                <p className="text-sm text-neutral-400 p-4">Sorry, couldn't find any {title.toLowerCase()}</p>
+                <p className="text-sm text-neutral-400 p-4">Sorry, couldn{"'"}t find any {title.toLowerCase()}</p>
               )}
             </BlocksWrapper>
         </div>
