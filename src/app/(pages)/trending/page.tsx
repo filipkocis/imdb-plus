@@ -21,14 +21,14 @@ function getTime(time?: string | string[]) {
   else return 'week'
 }
 
-const BUTTONS = [
-  <PageSelect key={0} label="Type" searchParam="t" defaultValue="all" values={[
+const BUTTONS = (type: "movie" | "tv" | "person" | "all", timeWindow: "week" | "day" ) => [
+  <PageSelect key={0} label="Type" searchParam="t" defaultValue={type} values={[
     { id: 0, name: 'All', value: 'all' },
     { id: 1, name: 'Movies', value: 'movie' },
     { id: 2, name: 'TV Shows', value: 'tv' },
     { id: 3, name: 'People', value: 'person' },
   ]} />,
-  <PageSelect key={1} label="Time" searchParam="f" defaultValue="week" values={[
+  <PageSelect key={1} label="Time" searchParam="f" defaultValue={timeWindow} values={[
     { id: 0, name: 'Week', value: 'week' },
     { id: 1, name: 'Day', value: 'day' },
   ]} />,
@@ -40,8 +40,11 @@ export default async function TrendingPage({ searchParams }: { searchParams: Pro
     t: type,
     f: filter
   } = await searchParams;
+
+  const pType = getType(type);
+  const pTimeWindow = getTime(filter);
   
-  const result = await TMDB.getTrending(getType(type), getTime(filter), parseInt(page + "") || 1);
+  const result = await TMDB.getTrending(pType, pTimeWindow, parseInt(page + "") || 1);
 
   if (Res.isError(result)) {
     return <ErrorDiv message={result.error} />
@@ -49,7 +52,11 @@ export default async function TrendingPage({ searchParams }: { searchParams: Pro
 
   return (
     <PageWrapper>
-      <ResultsTopBar totalPages={Math.min(result.ok.total_pages, 500)} title="Trending" buttons={BUTTONS} />
+      <ResultsTopBar 
+        totalPages={Math.min(result.ok.total_pages, 500)} 
+        title="Trending" 
+        buttons={BUTTONS(pType, pTimeWindow)} 
+      />
       <BlocksWrapper>
         {result.ok.results.map(item => {
           return <ResultBlock key={item.id} item={item}/>
