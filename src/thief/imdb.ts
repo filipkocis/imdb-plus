@@ -2,11 +2,12 @@
 
 import { FETCH_CACHE_OPTIONS } from "@/app/utils/utils";
 import * as cheerio from "cheerio";
+import { unstable_cache } from "next/cache";
 
-export async function getImdbRating(id: string) {
+const cached_getImdbRating = unstable_cache(async (id: string) => { 
   try {
     // const response = await fetch(`https://corsproxy.io/?url=https://www.imdb.com/title/${id}/ratings/`)
-    const response = await fetch(`https://www.imdb.com/title/${id}/ratings/`, FETCH_CACHE_OPTIONS)
+    const response = await fetch(`https://www.imdb.com/title/${id}/ratings/`)
     const htmlText = await response.text()
 
     const $ = cheerio.load(htmlText);  
@@ -21,4 +22,10 @@ export async function getImdbRating(id: string) {
     console.error(error)
     return null
   }
+}, [], {
+  revalidate: FETCH_CACHE_OPTIONS.next?.revalidate
+})
+
+export async function getImdbRating(id: string) {
+  return await cached_getImdbRating(id)
 }
