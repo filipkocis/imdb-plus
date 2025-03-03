@@ -168,12 +168,12 @@ export class TMDB {
     }
   }
 
-  static async getRecommendations(id: number, type: "movie" | "tv"): Promise<Result<Paginated<Movie | TvShow>>> {
-    return TMDB.fetch(`${TMDB.BASE}/${type}/${id}/recommendations`)
+  static async getRecommendations(id: number, type: "movie" | "tv", page: number = 1): Promise<Result<Paginated<Movie | TvShow>>> {
+    return TMDB.fetch(`${TMDB.BASE}/${type}/${id}/recommendations?page=${page}`)
   }
 
-  static async getSimilar(id: number, type: "movie" | "tv"): Promise<Result<Paginated<Movie | TvShow>>> {
-    return TMDB.fetch(`${TMDB.BASE}/${type}/${id}/similar`, json => {
+  static async getSimilar(id: number, type: "movie" | "tv", page: number = 1): Promise<Result<Paginated<Movie | TvShow>>> {
+    return TMDB.fetch(`${TMDB.BASE}/${type}/${id}/similar?page=${page}`, json => {
       for (const media of json.results) {
         media.media_type = type;
       }
