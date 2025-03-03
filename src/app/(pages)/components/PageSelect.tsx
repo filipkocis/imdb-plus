@@ -23,12 +23,20 @@ export default function PageSelect({ searchParam, defaultValue, values, label }:
   const params = useSearchParams()
 
   useEffect(() => {
+    if (selectedOption !== defaultValue) {
+      hasChanged.current = false
+      setSelectedOption(defaultValue)
+    }
+  }, [defaultValue])
+
+  useEffect(() => {
     if (!hasChanged.current) return;
 
     if (params.get(searchParam) !== selectedOption) {
       const url = new URLSearchParams(params)
       url.delete('p')
       url.set(searchParam, selectedOption)
+      if (selectedOption === "") url.delete(searchParam)
       router.push(`?${url.toString()}`, { scroll: false });
     }
   }, [selectedOption, searchParam])
