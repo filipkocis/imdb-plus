@@ -92,7 +92,7 @@ export default async function TrendingPage({ searchParams }: { searchParams: Pro
         buttons={BUTTONS(
           pType, 
           (!sort || !sort.length) ? "popularity" : sort.toString(), 
-          (!timeWindow || !timeWindow.length) ? "2020-01-01--2029-12-31" : timeWindow.toString(), 
+          (!timeWindow || !timeWindow.length) ? "" : timeWindow.toString(), 
           pGenres || "", 
           genresList.ok || []
         )} 
