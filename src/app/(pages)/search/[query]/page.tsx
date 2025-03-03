@@ -17,9 +17,11 @@ export default async function SearchPage({ params, searchParams }: {
     return <ErrorDiv message={result.error} />
   }
 
+  const isEmpty = result.ok.results.length === 0;
+
   return (
     <PageWrapper>
-      <ResultsTopBar totalPages={result.ok.total_pages} title={`Results for "${decodeURI(query.toString())}"`} buttons={[]} />
+      <ResultsTopBar totalPages={result.ok.total_pages} title={`${isEmpty ? "No " : ""}Results for "${decodeURI(query.toString())}"`} buttons={[]} />
       <BlocksWrapper>
         {result.ok.results.map(item => {
           return <ResultBlock key={item.id} item={item}/>

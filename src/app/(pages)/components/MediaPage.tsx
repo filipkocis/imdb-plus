@@ -125,6 +125,9 @@ export default async function MediaPage(props: MediaPageProps) {
             {creditsResult.ok.cast.map(cast => (
               <CastBlock key={cast.id} cast={cast} />
             ))}
+            {creditsResult.ok.cast.length === 0 && (
+              <p className="text-sm text-neutral-400 p-4">No actors data available</p>
+            )}
           </div>
         </div>
       </div>
