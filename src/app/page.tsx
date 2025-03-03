@@ -1,6 +1,6 @@
 import { PageWrapper } from "./components/wrapper/PageWrapper";
 import { Res, TMDB } from "./tmdb/lib";
-import Slider from "./components/home/Slider";
+import MovieSlider from "./components/home/MovieSlider";
 import HomepageSmallResults from "./components/wrapper/HomepageSmallResults";
 
 export default async function Home() {
@@ -17,9 +17,11 @@ export default async function Home() {
   return (
     <PageWrapper className="grid-rows-[auto] gap-20">
       <div className="flex flex-col gap-16 lg:grid lg:grid-cols-3 lg:gap-8">
-        <Slider movies={popularResult.ok.results} genres={genresResult.ok.genres} className="col-start-1 col-end-3 aspect-video">
-
-        </Slider>
+        <MovieSlider 
+          movies={popularResult.ok.results} 
+          genres={genresResult.ok.genres} 
+          className="col-start-1 col-end-3 aspect-video" 
+        />
         <div className="rounded-xl bg-secondary min-h-[300px]">
 
         </div>
