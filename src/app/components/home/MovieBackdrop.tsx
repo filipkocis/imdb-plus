@@ -15,6 +15,7 @@ export default function MovieBackdrop({ movie, genres, className, style }: { mov
           alt={movie.title} 
           className="object-cover gradient-mask aspect-video" 
           loading="eager"
+          sizes="80vw"
           fill={true}
         />
         <div className="absolute top-0 right-0 p-2 sm:p-4 md:p-8">
