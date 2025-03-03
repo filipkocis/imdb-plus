@@ -73,13 +73,13 @@ export default async function MediaPage(props: MediaPageProps) {
           <div className="h-full flex flex-col justify-between gap-4">
             <div>
               <div className="flex items-center gap-x-4 flex-center flex-wrap">
-                <h1 className="text-4xl font-bold">{title}</h1> 
+                <h1 className="text-2xl md:text-4xl font-bold">{title}</h1> 
                 <p className="rounded-full bg-yellow-400 text-black px-3 text-sm py-1">{details.status}</p>
               </div>
               <p className="text-neutral-400 text-sm">{details.tagline}</p>
             </div>
 
-            <div className="flex gap-4 flex-wrap [&>*]:flex [&>*]:items-center [&>*]:gap-2">
+            <div className="flex gap-4 max-md:text-sm flex-wrap [&>*]:flex [&>*]:items-center [&>*]:gap-2">
               {type === "movie" && (
                 <p>
                   <LucideClock size={32} /> 
@@ -96,7 +96,7 @@ export default async function MediaPage(props: MediaPageProps) {
               </p>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 max-md:text-sm">
               <p className="text-neutral-400">{details.overview || (
                   <span className="italic">No overview available</span>
               )}</p>
@@ -107,7 +107,7 @@ export default async function MediaPage(props: MediaPageProps) {
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-wrap">
               <Button variant="default" className="font-bold" asChild>
                 <Link href={`https://www.imdb.com/title/${imdb_id}/`} referrerPolicy="no-referrer" target="_blank" rel="noopener noreferrer">
                   <FaArrowUpRightFromSquare style={{ width: 10 }} />
@@ -169,7 +169,7 @@ function CastBlock({ cast }: { cast: Cast }) {
       <img 
         src={TMDB.poster(cast.profile_path, "/gradient.png", "w92")} 
         alt={cast.name} 
-        className="relative w-16 h-16 rounded-full object-center object-cover overflow-hidden"
+        className="relative min-w-16 w-16 h-16 rounded-full object-center object-cover overflow-hidden"
         width={64}
         height={64}
       /> 
