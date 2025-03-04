@@ -17,7 +17,7 @@ export default async function Home() {
 
   return (
     <PageWrapper className="grid-rows-[auto] gap-20">
-      <div className="flex flex-col gap-16 lg:grid lg:grid-cols-3 lg:gap-8">
+      <div className="flex flex-col gap-16 lg:grid lg:grid-cols-3 lg:gap-8 overflow-x-hidden">
         <MovieSlider 
           movies={popularResult.ok.results} 
           genres={genresResult.ok.genres} 
