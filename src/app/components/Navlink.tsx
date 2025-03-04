@@ -25,9 +25,9 @@ export function NavLink({ href, icon }: { href: string, icon: IconVariant }) {
   const Icon = ICONS[icon]
 
   return (
-    <Link href={href} className={cn("text-white/60 hover:text-white transition-all max-md:border-t-2 md:border-r-2 border-transparent px-3 py-2 hover:bg-secondary", selected && "text-white bg-secondary max-md:border-t-2 md:border-r-2 border-contrast")}>
+    <Link href={href} className={cn("text-white/60 hover:text-white transition-all max-sm:border-t-2 sm:border-r-2 border-transparent px-2 md:px3 py-1.5 md:py-2 hover:bg-secondary", selected && "text-white bg-secondary max-sm:border-t-2 sm:border-r-2 border-contrast")}>
       <div className="transition-none rounded-lg p-2 bg-secondary"> 
-        <Icon size={20} className="" />
+        <Icon size={20} className="max-md:!w-[16px]" />
       </div>
     </Link>
   )
