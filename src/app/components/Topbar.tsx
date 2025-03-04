@@ -16,12 +16,12 @@ export default function Topbar() {
   }
 
   return (
-    <header className="flex items-center justify-between gap-4">
+    <header className="flex items-center justify-between gap-4 px-3 sm:px-4">
       <Searchbar />
       {noServers && (<>
         <button 
           onClick={handleClick} 
-          className="rounded-lg ring-contrast ring-2 hover:bg-contrast hover:text-black transition-colors px-3 py-1 text-contrast font-semibold uppercase"
+          className="rounded-lg border-contrast border-2 hover:bg-contrast hover:text-black transition-colors px-3 py-1 text-contrast font-semibold uppercase"
         >Magic</button>
         {magic && <UnlockOverlay setOpen={setMagic} />}
       </>)}
