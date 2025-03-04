@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useRef } from "react"
+import { IoSearch } from "react-icons/io5"
 
 export function Searchbar() {
   const router = useRouter()
@@ -17,12 +18,14 @@ export function Searchbar() {
   }
 
   return  (
-    <div className="flex gap-4 rounded-full overflow-hidden w-full max-w-[690px] bg-white/5 focus-within:bg-white/10">
+    <div className="relative flex items-center gap-4 rounded-full overflow-hidden w-full max-w-[690px] bg-white/5 focus-within:bg-white/10">
+      <IoSearch className="absolute left-4 text-neutral-400" />
       <input
+        name="search"
         onKeyDown={e => e.key === "Enter" && handleSearch()}
         ref={inputRef}
         type="text" 
-        className="px-6 py-3 font-semibold text-[0.95rem] w-full bg-transparent"
+        className="pl-10 px-6 py-3 placeholder:font-semibold text-[0.95rem] w-full bg-transparent"
         style={{ letterSpacing: "0.05em" }}
         placeholder={`Search...`}
       />
