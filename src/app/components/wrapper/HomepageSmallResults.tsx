@@ -21,7 +21,8 @@ const COLUMNS = [
 function handleResize(containerWidth: number, windowWidth: number) {
   const gap = 8; // gap-2
   const column = COLUMNS.find(width => width[0] > (windowWidth || 1024))?.at(1) || (COLUMNS.at(-1)?.at(1) as number + 1)
-  const columns = (column || 2) - 1
+  const _columns = (column || 2) - 1
+  const columns = Math.max(_columns, 2) // limit min to 2 because of mobile
   const width = (containerWidth - gap * columns) / columns
   
   return width
@@ -48,7 +49,7 @@ export default function HomepageSmallResults({ result, href, title }: { result: 
         <div ref={containerRef} className="overflow-x-auto">
             <BlocksWrapper small>
               {result.ok.results.map(item => (
-                <div key={item.id} style={{ width: computedWidth, aspectRatio: "2/3" }}>
+                <div key={item.id} className="max-sm:!w-[250px]" style={{ width: computedWidth, aspectRatio: "2/3" }}>
                   <ResultBlock item={item} />
                 </div>
               ))}
