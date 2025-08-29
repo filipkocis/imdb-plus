@@ -197,7 +197,7 @@ export class TMDB {
   }
 }
 
-export type SearchResult = Movie | TvShow | Person
+export type SearchResult = Movie | TvShow | Person | Collection
 
 export type Movie = {
   media_type: "movie"
@@ -370,6 +370,18 @@ export type TvShow = {
   vote_average: number
   vote_count: number
 }
+
+export type Collection = {
+  media_type: "collection"
+  adult: boolean;
+  backdrop_path: string | null;
+  id: number;
+  title: string;
+  original_title: string;
+  original_language: string;
+  overview: string;
+  poster_path: string | null;
+};
 
 export type Paginated<T> = {
   page: number
