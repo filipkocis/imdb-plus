@@ -1,6 +1,7 @@
 "use server"
 
 import { cookies } from "next/headers"
+import { Requests } from "@/app/utils/utils";
 
 function Server(name: string, url: string, moviePath: string, tvPath: string) {
   return { name, url, moviePath, tvPath }
@@ -26,20 +27,7 @@ export async function getServerList() {
   }
 }
 
-class Requests {
-  private requests: number = 0
-  private last: number = 0
-
-  constructor(public max: number, public timeframe: number) {}
-  
-  canRequest() {
-    if (this.last + this.timeframe < Date.now()) this.requests = 0;
-    this.last = Date.now();
-    this.requests++;
-    return this.requests <= this.max;
-  }
-}
-const requests = new Requests(5, 1000 * 60 * 5)
+const requests = new Requests(5, 1000 * 60 * 5) // 5 requests every 5 minutes
 
 export async function verifyWizardness(magicSpell: string) {
   if (!requests.canRequest()) return false;
