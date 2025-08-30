@@ -12,19 +12,7 @@ const SERVERS: ReturnType<typeof Server>[] = [
 ]
 
 export async function getServerList() {
-  const cookieStore = await cookies()
-  const wizard = cookieStore.get("magic-book")
-  if (!wizard) return [];
-
-  const isWizard = wizard.value === process.env.MAGIC_BOOK;
-
-  if (isWizard) {
-    return SERVERS;
-  }
-  else {
-    cookieStore.delete("magic-book")
-    return []
-  }
+  return await isWizard() ? SERVERS : [];
 }
 
 const requests = new Requests(5, 1000 * 60 * 5) // 5 requests every 5 minutes
@@ -49,4 +37,14 @@ export async function verifyWizardness(magicSpell: string) {
   }) 
 
   return SERVERS;
+}
+
+export async function isWizard() {
+  const cookieStore = await cookies()
+  const magicBook = cookieStore.get("magic-book")
+  if (!magicBook) return false;
+
+  const isWizard = magicBook.value === process.env.MAGIC_BOOK;
+  if (!isWizard) cookieStore.delete("magic-book")
+  return isWizard;
 }
