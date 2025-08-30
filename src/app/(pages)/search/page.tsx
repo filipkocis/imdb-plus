@@ -42,22 +42,22 @@ function getGenres(genres?: string | string[]) {
 
 const BUTTONS = (type: "movie" | "tv", sort: string, timeWindow: string, genres: string, genresList: Genre[]) => [
   <PageSelect key={0} label="Type" searchParam="t" defaultValue={type} values={[
-    { id: 0, name: 'Movies', value: 'movie' },
-    { id: 1, name: 'TV Shows', value: 'tv' },
+    { name: 'Movies', value: 'movie' },
+    { name: 'TV Shows', value: 'tv' },
   ]} />,
   <PageSelect key={1} label="Sort" searchParam="s" defaultValue={sort} values={[
-    { id: 0, name: 'Popularity', value: 'popularity' },
-    { id: 1, name: 'Rating', value: 'rating' },
-    { id: 2, name: 'Votes', value: 'votes' },
-    { id: 3, name: 'Release', value: 'release' },
-    { id: 4, name: 'Revenue', value: 'revenue' },
+    { name: 'Popularity', value: 'popularity' },
+    { name: 'Rating', value: 'rating' },
+    { name: 'Votes', value: 'votes' },
+    { name: 'Release', value: 'release' },
+    { name: 'Revenue', value: 'revenue' },
   ]} />,
   <PageSelect key={2} label="Genre" searchParam="g" defaultValue={genres} values={genresList.map(genre => (
-    { id: genre.id, name: genre.name, value: genre.id + "" }
+    { name: genre.name, value: genre.id + "" }
   ))} />,
   <PageSelect key={3} label="Release" searchParam="w" defaultValue={timeWindow} values={Array.from({ length: 17 }).map((_, i) => {
     const year = i * 10 + 1870;
-    return { id: i, name: `${year}s`, value: `${year}-01-01--${year + 9}-12-31` }
+    return { name: `${year}s`, value: `${year}-01-01--${year + 9}-12-31` }
   }).reverse()} />,
 
 ]

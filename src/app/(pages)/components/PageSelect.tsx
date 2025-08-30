@@ -11,7 +11,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 type Value = {
-  id: number
   name: string
   value: string
 }
@@ -54,9 +53,9 @@ export default function PageSelect({ searchParam, defaultValue, values, label }:
       </SelectTrigger>
       <SelectContent className="border-none">
         <SelectGroup>
-          {values.map(value => (
+          {values.map((value, i) => (
             <SelectItem 
-              key={value.id} 
+              key={i} 
               value={value.value}
             >{value.name}</SelectItem>
           ))}
