@@ -10,6 +10,7 @@ import {
 } from "react";
 import { getWizardInfo, WizardInfo } from "@/app/db/lib";
 import { toast } from "sonner";
+import { Res } from "@/app/tmdb/lib";
 
 type WizardProviderValue = {
   wizard: WizardInfo | null;
@@ -32,8 +33,8 @@ export default function WizardProvider({
     const fetchWizard = async () => {
       try {
         const info = await getWizardInfo();
-        if (!info) return;
-        else setWizard(info);
+        if (Res.isError(info)) throw new Error(info.error);
+        else setWizard(info.ok);
       } catch (error) {
         toast.error((error as Error)?.message || "Uh oh!");
       }
