@@ -1,28 +1,11 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { usePlayer } from "@/app/context/PlayerContext"
+import { PlayerOptions, usePlayer } from "@/app/context/PlayerContext"
 import { FaPlay } from "react-icons/fa"
 import { cn } from "@/app/utils/merge"
 
-type WatchButtonProps = {
-  type: "youtube"
-  id: string
-  name: string
-} | {
-  type: "movie"
-  id: number
-  name: string
-} | {
-  type: "tv"
-  id: number
-  name: string
-  season: number
-  episode: number
-  episodeCount: number
-}
-
-export default function WatchButton(props: WatchButtonProps) {
+export default function WatchButton(props: PlayerOptions) {
   const { setPlayer } = usePlayer()
   const trailer = props.type === "youtube"
 

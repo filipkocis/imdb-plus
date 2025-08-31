@@ -116,7 +116,7 @@ export default async function MediaPage(props: MediaPageProps) {
               </Button>
 
               <WatchButton name={trailer.ok?.name || "Trailer"} type="youtube" id={trailer.ok ? trailer.ok.link : "#"} />
-              <WatchButton name={title} id={id} {...(type === "tv" ? 
+              <WatchButton name={title} imdbId={imdb_id} id={id} {...(type === "tv" ? 
                   { 
                     type: "tv", 
                     season: props.currentSeason, 
@@ -147,6 +147,7 @@ export default async function MediaPage(props: MediaPageProps) {
           current={props.currentSeason} 
           seasons={(details as TvDetails).seasons} 
           showId={id} 
+          imdbId={imdb_id} 
           showName={title}
         />
       )}

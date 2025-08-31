@@ -3,16 +3,18 @@
 import { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
 
 export type PlayerOptions = {
-  id: string
   type: 'youtube'
+  id: string
   name: string
 } | {
-  id: number
   type: 'movie'
+  id: number
+  imdbId: string | null
   name: string
 } | {
-  id: number
   type: 'tv'
+  id: number
+  imdbId: string | null
   name: string
   season: number
   episode: number

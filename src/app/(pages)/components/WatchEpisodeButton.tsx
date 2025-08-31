@@ -1,22 +1,20 @@
 "use client"
 
-import { usePlayer } from "@/app/context/PlayerContext"
+import { PlayerOptions, usePlayer } from "@/app/context/PlayerContext"
 
-type WatchButtonProps = {
-  id: number
-  name: string
-  season: number
-  episode: number
-  episodeCount: number
-  children: React.ReactNode
-  className?: string
-}
+type WatchEpisodeButtonProps = Omit<
+  Extract<PlayerOptions, { type: "tv" }>,
+  "type"
+> & {
+  children: React.ReactNode;
+  className?: string;
+};
 
-export default function WatchEpisodeButton(props: WatchButtonProps) {
+export default function WatchEpisodeButton(props: WatchEpisodeButtonProps) {
   const { setPlayer } = usePlayer()
 
   const handleClick = () => {
-    setPlayer({ type: "tv", ...props })
+    setPlayer({ type: 'tv', ...props })
   }
 
   return (

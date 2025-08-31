@@ -6,7 +6,7 @@ import EpisodeBlock from "./EpisodeBlock";
 
 type Seasons = TvDetails["seasons"]
 
-export default async function SeasonsBlock({ seasons, current, showId, showName }: { seasons: Seasons, current: number, showId: number, showName: string }) {
+export default async function SeasonsBlock({ seasons, current, showId, imdbId, showName }: { seasons: Seasons, current: number, showId: number, imdbId: string | null, showName: string }) {
   const sortedSeasons = seasons.map(season => season).sort((a, b) => a.season_number - b.season_number)
   const seasonDetails = await TMDB.getSeasonDetails(showId, current)
 
@@ -36,6 +36,7 @@ export default async function SeasonsBlock({ seasons, current, showId, showName 
             episodeCount={seasonDetails.ok.episodes.length}
             currentSeason={current}
             showId={showId}
+            imdbId={imdbId}
             showName={showName}
           />
         ))} 
