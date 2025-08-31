@@ -23,14 +23,14 @@ function getTime(time?: string | string[]) {
 
 const BUTTONS = (type: "movie" | "tv" | "person" | "all", timeWindow: "week" | "day" ) => [
   <PageSelect key={0} label="Type" searchParam="t" defaultValue={type} values={[
-    { id: 0, name: 'All', value: 'all' },
-    { id: 1, name: 'Movies', value: 'movie' },
-    { id: 2, name: 'TV Shows', value: 'tv' },
-    { id: 3, name: 'People', value: 'person' },
+    { name: 'All', value: 'all' },
+    { name: 'Movies', value: 'movie' },
+    { name: 'TV Shows', value: 'tv' },
+    { name: 'People', value: 'person' },
   ]} />,
   <PageSelect key={1} label="Time" searchParam="f" defaultValue={timeWindow} values={[
-    { id: 0, name: 'Week', value: 'week' },
-    { id: 1, name: 'Day', value: 'day' },
+    { name: 'Week', value: 'week' },
+    { name: 'Day', value: 'day' },
   ]} />,
 ];
 
