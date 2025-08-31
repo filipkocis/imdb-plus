@@ -4,7 +4,7 @@ import { FaRegCirclePlay } from "react-icons/fa6";
 import { EpisodeBase } from "@/app/tmdb/lib";
 import { CiStar } from "react-icons/ci";
 
-export default function EpisodeBlock({ episode, episodeCount, currentSeason, showId, showName }: { episode: EpisodeBase, episodeCount: number, currentSeason: number, showId: string, showName: string }) {
+export default function EpisodeBlock({ episode, episodeCount, currentSeason, showId, showName }: { episode: EpisodeBase, episodeCount: number, currentSeason: number, showId: number, showName: string }) {
   return (
     <WatchEpisodeButton
       episode={episode.episode_number}

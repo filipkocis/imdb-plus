@@ -7,11 +7,11 @@ export type PlayerOptions = {
   type: 'youtube'
   name: string
 } | {
-  id: string
+  id: number
   type: 'movie'
   name: string
 } | {
-  id: string
+  id: number
   type: 'tv'
   name: string
   season: number

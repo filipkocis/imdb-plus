@@ -35,7 +35,7 @@ export default async function SeasonsBlock({ seasons, current, showId, showName 
             episode={episode} 
             episodeCount={seasonDetails.ok.episodes.length}
             currentSeason={current}
-            showId={showId.toString()}
+            showId={showId}
             showName={showName}
           />
         ))} 

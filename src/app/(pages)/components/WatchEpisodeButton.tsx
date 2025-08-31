@@ -1,9 +1,9 @@
 "use client"
 
-import { usePlayer } from "../../context/PlayerContext"
+import { usePlayer } from "@/app/context/PlayerContext"
 
 type WatchButtonProps = {
-  id: string
+  id: number
   name: string
   season: number
   episode: number

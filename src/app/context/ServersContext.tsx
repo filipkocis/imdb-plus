@@ -9,15 +9,15 @@ export class Server {
   constructor(
     public name: string, 
     public url: string, 
-    public moviePath: (id: string) => string,
-    public tvPath: (id: string, season: number, episode: number) => string,
+    public moviePath: (id: number) => string,
+    public tvPath: (id: number, season: number, episode: number) => string,
   ) {}
 
-  getMovie = (id: string) => `${this.url}/${this.moviePath(id)}`
-  getTv = (id: string, season: number, episode: number) => `${this.url}/${this.tvPath(id, season, episode)}`
+  getMovie = (id: number) => `${this.url}/${this.moviePath(id)}`
+  getTv = (id: number, season: number, episode: number) => `${this.url}/${this.tvPath(id, season, episode)}`
 }
 
-function evaluateTemplateSafe(templateStr: string, variables: Record<string, number | string>) {
+function evaluateTemplateSafe(templateStr: string, variables: Record<string, number>) {
   return templateStr.replace(/\${(.*?)}/g, (_, key) => variables[key].toString() || "");
 }
 
