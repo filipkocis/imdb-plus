@@ -1,30 +1,30 @@
-"use server"
+"use server";
 
-import { cookies } from "next/headers"
+import { cookies } from "next/headers";
 import { Requests } from "@/app/utils/utils";
 
 function Server(name: string, url: string, moviePath: string, tvPath: string) {
-  return { name, url, moviePath, tvPath }
+  return { name, url, moviePath, tvPath };
 }
 
 const SERVERS: ReturnType<typeof Server>[] = [
   // You won't be able to access these servers unless you're a wizard, so stop lurking around :P
-]
+];
 
 export async function getServerList() {
-  return await isWizard() ? SERVERS : [];
+  return (await hasMagicBook()) ? SERVERS : [];
 }
 
-const requests = new Requests(5, 1000 * 60 * 5) // 5 requests every 5 minutes
+const requests = new Requests(5, 1000 * 60 * 5); // 5 requests every 5 minutes
 
 export async function verifyWizardness(magicSpell: string) {
   if (!requests.canRequest()) return false;
 
-  const cookieStore = await cookies()
+  const cookieStore = await cookies();
   const isWizard = magicSpell === process.env.MAGIC_SPELL;
   if (!isWizard) {
-    if (cookieStore.get("magic-book")) cookieStore.delete("magic-book")
-    return false
+    cookieStore.delete("magic-book");
+    return false;
   }
 
   const MAGIC_BOOK = process.env.MAGIC_BOOK;
@@ -34,17 +34,17 @@ export async function verifyWizardness(magicSpell: string) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     httpOnly: true,
-  }) 
+  });
 
   return SERVERS;
 }
 
-export async function isWizard() {
-  const cookieStore = await cookies()
-  const magicBook = cookieStore.get("magic-book")
-  if (!magicBook) return false;
+export async function hasMagicBook(server = false) {
+  const cookieStore = await cookies();
+  const magicBook = cookieStore.get("magic-book");
 
-  const isWizard = magicBook.value === process.env.MAGIC_BOOK;
-  if (!isWizard) cookieStore.delete("magic-book")
-  return isWizard;
+  if (!magicBook) return false;
+  const hasMagicBook = magicBook.value === process.env.MAGIC_BOOK;
+  if (!hasMagicBook && !server) cookieStore.delete("magic-book");
+  return hasMagicBook;
 }
