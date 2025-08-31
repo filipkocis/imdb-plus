@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Searchbar } from "./Searchbar";
 import MagicOverlay from "./unlock/MagicOverlay";
-import { bamboozleServer, useServerList } from "../context/ServersContext";
 import WizardOverlay from "./unlock/WizardOverlay";
+import { bamboozleServer, useServerList } from "../context/ServersContext";
 import { useWizard } from "../context/WizardContext";
 
 export default function Topbar() {
@@ -36,7 +36,7 @@ function MagicButton({ type }: { type: "server" | "wizard" }) {
         onClick={handleClick}
         className="rounded-lg border-contrast border-2 hover:bg-contrast hover:text-black transition-colors px-3 py-1 text-contrast font-semibold uppercase"
       >
-        {type === "server" ? "Magic" : "Wizard?"}
+        {type === "server" ? "Magic" : "Sigil"}
       </button>
       {magic &&
         (type === "server" ? (

@@ -2,6 +2,7 @@ import { useWizard } from "@/app/context/WizardContext";
 import { bindWizardSigil } from "@/app/db/lib";
 import { toast } from "sonner";
 import UnlockOverlay from "./UnlockOverlay";
+import { Res } from "@/app/tmdb/lib";
 
 export default function WizardOverlay({
   setOpen,
@@ -12,8 +13,8 @@ export default function WizardOverlay({
 
   const onSubmit = async (value: string) => {
     const wizard = await bindWizardSigil(value);
-    if (!wizard) throw new Error("Stop right there, criminal scum!");
-    setWizard(wizard);
+    if (Res.isError(wizard)) throw new Error(wizard.error);
+    setWizard(wizard.ok);
     toast.success("Welcome back, wizard!");
   };
 

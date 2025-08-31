@@ -8,6 +8,7 @@ import { FaTv } from "react-icons/fa";
 import { LuSearch } from "react-icons/lu";
 import { AiOutlineHome } from "react-icons/ai";
 import { SlFire } from "react-icons/sl";
+import { PiVaultBold } from "react-icons/pi";
 
 const ICONS = {
   home: AiOutlineHome,
@@ -15,6 +16,7 @@ const ICONS = {
   tv: FaTv,
   trending: SlFire,
   search: LuSearch, 
+  vault: PiVaultBold,
 }
 
 type IconVariant = keyof typeof ICONS

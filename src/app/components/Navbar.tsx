@@ -1,8 +1,11 @@
 import Image from "next/image";
 import { NavLink } from "./Navlink";
-import Logo from "@/assets/logo.png"
+import Logo from "@/assets/logo.png";
+import { hasWizardBond } from "@/app/db/lib";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const isWizard = await hasWizardBond();
+
   return (
     <div className="z-20 absolute sm:left-0 bg-background max-sm:bottom-0 flex sm:flex-col gap-2 max-sm:border-t-2 sm:border-r-2 border-secondary max-sm:w-full sm:h-full overflow-x-hidden">
       <div className="max-sm:hidden items-center bg-secondary justify-center flex py-4">
@@ -15,12 +18,13 @@ export default function Navbar() {
           <NavLink href="/tv" icon="tv" />
           <NavLink href="/trending" icon="trending" />
           <NavLink href="/search" icon="search" />
+          {isWizard && <NavLink href="/vault" icon="vault" />}
         </nav>
       </div>
       <div className="max-sm:hidden items-center justify-center bg-secondary hidden sm:flex py-4">
-        <p 
+        <p
           className="text-center -rotate-180 text-contrast text-xl md:text-2xl font-semibold"
-          style={{ 
+          style={{
             writingMode: "vertical-lr",
             letterSpacing: "0.1em",
           }}
@@ -29,5 +33,5 @@ export default function Navbar() {
         </p>
       </div>
     </div>
-  )
+  );
 }
