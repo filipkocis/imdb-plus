@@ -18,15 +18,9 @@ export type Entry = {
   imdbId: string | null;
   name: string;
   date: number;
-} & (
-  | { type: "movie" }
-  | {
-      type: "tv";
-      seasons: EntrySeason[];
-    }
-);
+} & ({ type: "movie" } | { type: "tv"; seasons: EntrySeason[] });
 
-type EntrySeason = { season: number; episodes: EntryEpisode[] };
+export type EntrySeason = { season: number; episodes: EntryEpisode[] };
 type EntryEpisode = { episode: number; date: number };
 
 async function saveCompressed(path: PathLike, data: unknown) {

@@ -22,7 +22,7 @@ function getType(type?: string | string[]) {
   else return "all";
 }
 
-function getList(list?: string | string[]) {
+export function getList(list?: string | string[]) {
   if (list === "watchlist" || list === "played" || list === "finished")
     return list;
   else return "played";
@@ -102,6 +102,12 @@ export default async function VaultPage({
 
     const media = mediaFromDetails(entry.type, details);
     medias.push(media);
+
+    if (Res.isOk(media)) {
+      const date = new Date(entry.date).toUTCString();
+      if (media.ok.media_type === "tv") media.ok.first_air_date = date;
+      if (media.ok.media_type === "movie") media.ok.release_date = date;
+    }
   }
 
   return (
