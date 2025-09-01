@@ -2,7 +2,7 @@ import ErrorDiv from "@/app/components/ErrorDiv"
 import { parseDate } from "@/app/components/result/ResultBlock"
 import WatchButton from "@/app/components/WatchButton"
 import SuggestedSmallResults from "@/app/components/wrapper/SuggestedSmallResults"
-import { Cast, MovieDetails, TMDB, TvDetails } from "@/app/tmdb/lib"
+import { Cast, MovieDetails, Res, TMDB, TvDetails } from "@/app/tmdb/lib"
 import { LucideCalendar, LucideClock, LucideGlobe } from "lucide-react"
 import Unavailable from "@/assets/unavailable.png"
 import Image from "next/image"
@@ -39,7 +39,7 @@ export default async function MediaPage(props: MediaPageProps) {
   let details = detailsResult.ok
   const plural = type === "movie" ? "Movies" : "TV Shows"
 
-  let title, runtime, release_date, imdb_id;
+  let title, runtime, release_date, imdb_id, episode_count = 0;
   if (type === "movie") {
     details = details as MovieDetails
     title = details.title
@@ -53,6 +53,9 @@ export default async function MediaPage(props: MediaPageProps) {
     release_date = details.first_air_date
     const externalIds = await TMDB.externalTvShowIDs(id)
     imdb_id = externalIds.ok?.imdb_id || null
+    episode_count =
+      details.seasons.find((s) => s.season_number == props.currentSeason)
+        ?.episode_count || 0;
   }
 
   return (
@@ -115,16 +118,28 @@ export default async function MediaPage(props: MediaPageProps) {
                 </Link>
               </Button>
 
-              <WatchButton name={trailer.ok?.name || "Trailer"} type="youtube" id={trailer.ok ? trailer.ok.link : "#"} />
-              <WatchButton name={title} imdbId={imdb_id} id={id} {...(type === "tv" ? 
-                  { 
-                    type: "tv", 
-                    season: props.currentSeason, 
-                    episode: 1, 
-                    episodeCount: (details as TvDetails).seasons.find(s => s.season_number == props.currentSeason)?.episode_count || 0 
-                  } : { type: "movie" }
-                )} 
-              />
+              {Res.isOk(trailer) && (
+                <WatchButton
+                  name={trailer.ok.name || "Trailer"}
+                  type="youtube"
+                  id={trailer.ok.link || "#"}
+                />
+              )}
+              {!(type === "tv" && episode_count === 0) && (
+                <WatchButton
+                  name={title}
+                  imdbId={imdb_id}
+                  id={id}
+                  {...(type === "tv"
+                    ? {
+                        type: "tv",
+                        season: props.currentSeason,
+                        episode: 1,
+                        episodeCount: episode_count,
+                      }
+                    : { type: "movie" })}
+                />
+              )}
             </div>
           </div>
         </div>
