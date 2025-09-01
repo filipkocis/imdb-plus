@@ -90,30 +90,31 @@ export default async function VaultPage({
   const pList = getList(list);
   const pPage = parseInt(page + "") || 1;
 
-  const result = await getWizardList(pList, pType, pPage);
-  if (Res.isError(result)) return notFound();
+  const entries = await getWizardList(pList, pType, pPage);
+  if (Res.isError(entries)) return notFound();
 
-  const listDetails: Result<Movie | TvShow>[] = [];
-  for (const entry of result.ok.results) {
+  const medias: Result<Movie | TvShow>[] = [];
+  for (const entry of entries.ok.results) {
     const details =
       entry.type === "movie"
         ? await TMDB.getMovieDetails(entry.id)
         : await TMDB.getTvDetails(entry.id);
 
-    listDetails.push(mediaFromDetails(entry.type, details));
+    const media = mediaFromDetails(entry.type, details);
+    medias.push(media);
   }
 
   return (
     <PageWrapper>
       <ResultsTopBar
-        totalPages={result.ok.total_pages}
+        totalPages={entries.ok.total_pages}
         title="Vault"
         buttons={BUTTONS(pType, pList)}
       />
       <BlocksWrapper>
-        {listDetails.map((details, i) =>
-          Res.isError(details) ? (
-            <ErrorDiv key={i} message={details.error} />
+        {medias.map((media, i) =>
+          Res.isError(media) ? (
+            <ErrorDiv key={i} message={media.error} />
           ) : (
             <ResultBlock key={details.ok.id} item={details.ok} />
           ),
