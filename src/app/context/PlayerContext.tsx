@@ -55,6 +55,11 @@ function entryFromPlayer(player: PlayerOptions | null): MediaEntry | null {
   };
 }
 
+function addedText(entry: MediaEntry) {
+  if (entry.type === "movie") return entry.name;
+  else return `${entry.name} S${entry.season}E${entry.episode}`;
+}
+
 export default function PlayerProvider({ children }: { children: React.ReactNode }) {
   const [player, setPlayerState] = useState<PlayerOptions | null>(null)
 
@@ -63,6 +68,7 @@ export default function PlayerProvider({ children }: { children: React.ReactNode
     if (entry) {
       addListEntry("played", entry).then((res) => {
         if (Res.isError(res)) toast.error(res.error);
+        else if (res.ok) toast.success(`${addedText(entry)} added to played list`)
       });
     }
     setPlayerState(player);
