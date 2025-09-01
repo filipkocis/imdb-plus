@@ -183,6 +183,9 @@ export async function addListEntry(
 
   if (existingEntry.type === "movie") throw new Error("Mismatched entry types");
 
+  // Update date to most recent
+  existingEntry.date = date;
+
   // Add to existing TV entry
   const season = existingEntry.seasons.find((s) => s.season === entry.season);
   if (season) {
