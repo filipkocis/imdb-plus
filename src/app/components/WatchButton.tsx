@@ -10,7 +10,7 @@ export default function WatchButton(props: PlayerOptions) {
   const trailer = props.type === "youtube"
 
   const handleClick = () => {
-    setPlayer(props);
+    setPlayer({ ...props });
   };
 
   return (

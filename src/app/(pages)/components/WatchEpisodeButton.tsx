@@ -10,16 +10,16 @@ type WatchEpisodeButtonProps = Omit<
   className?: string;
 };
 
-export default function WatchEpisodeButton(props: WatchEpisodeButtonProps) {
+export default function WatchEpisodeButton({ className, children, ...props }: WatchEpisodeButtonProps) {
   const { setPlayer } = usePlayer()
 
   const handleClick = () => {
-    setPlayer({ type: 'tv', ...props })
+    setPlayer({ type: "tv", ...props });
   }
 
   return (
-    <button onClick={handleClick} className={props.className}>
-      {props.children}
+    <button onClick={handleClick} className={className}>
+      {children}
     </button>
   )
 }

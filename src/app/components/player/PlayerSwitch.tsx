@@ -8,7 +8,7 @@ export default function PlayerSwitch(
   { player, setPlayer, server, setServer, className }: 
   { 
     player: PlayerOptions, 
-    setPlayer?: Dispatch<SetStateAction<PlayerOptions | null>>, 
+    setPlayer?: (player: PlayerOptions | null) => void, 
     server: number, 
     setServer?: Dispatch<SetStateAction<number>>, 
     className?: string 

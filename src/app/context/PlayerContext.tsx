@@ -1,6 +1,9 @@
 "use client"
 
-import { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { Res } from "@/app/tmdb/lib";
+import { addListEntry, MediaEntry } from "@/app/db/lib";
+import { toast } from "sonner";
 
 export type PlayerOptions = {
   type: 'youtube'
@@ -23,7 +26,7 @@ export type PlayerOptions = {
 
 type PlayerProviderValue = {
   player: PlayerOptions | null
-  setPlayer: Dispatch<SetStateAction<PlayerOptions | null>>
+  setPlayer: (player: PlayerOptions | null) => void
 }
 
 export const PlayerContext = createContext<PlayerProviderValue>({
@@ -31,8 +34,39 @@ export const PlayerContext = createContext<PlayerProviderValue>({
   setPlayer: () => {}
 })
 
+function entryFromPlayer(player: PlayerOptions | null): MediaEntry | null {
+  if (!player || player.type === "youtube") return null;
+  if (player.type === "tv") {
+    if (
+      player.episodeCount < 1 ||
+      player.season < 1 ||
+      player.episode > player.episodeCount
+    )
+      return null;
+  }
+
+  return {
+    id: player.id,
+    imdbId: player.imdbId || null,
+    name: player.name,
+    ...(player.type === "movie"
+      ? { type: "movie" }
+      : { type: "tv", season: player.season, episode: player.episode }),
+  };
+}
+
 export default function PlayerProvider({ children }: { children: React.ReactNode }) {
-  const [player, setPlayer] = useState<PlayerOptions | null>(null)
+  const [player, setPlayerState] = useState<PlayerOptions | null>(null)
+
+  function setPlayer(player: PlayerOptions | null) {
+    const entry = entryFromPlayer(player);
+    if (entry) {
+      addListEntry("played", entry).then((res) => {
+        if (Res.isError(res)) toast.error(res.error);
+      });
+    }
+    setPlayerState(player);
+  }
 
   return (
     <PlayerContext.Provider value={{ player, setPlayer }}>
