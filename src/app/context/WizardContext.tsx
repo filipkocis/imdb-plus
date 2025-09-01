@@ -33,8 +33,10 @@ export default function WizardProvider({
     const fetchWizard = async () => {
       try {
         const info = await getWizardInfo();
-        if (Res.isError(info)) throw new Error(info.error);
-        else setWizard(info.ok);
+        if (Res.isError(info)) {
+          if (info.error.endsWith("Harry.")) return;
+          else throw new Error(info.error);
+        } else setWizard(info.ok);
       } catch (error) {
         toast.error((error as Error)?.message || "Uh oh!");
       }
