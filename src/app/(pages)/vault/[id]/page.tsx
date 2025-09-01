@@ -2,7 +2,6 @@ import ErrorDiv from "@/app/components/ErrorDiv";
 import ResultsTopBar from "@/app/components/result/ResultsTopBar";
 import { PageWrapper } from "@/app/components/wrapper/PageWrapper";
 import { Res, TMDB, TvDetails } from "@/app/tmdb/lib";
-import { getList } from "../page";
 import { getPossibleLists, getWizardEntry, ListType } from "@/app/db/lib";
 import EpisodeBlock from "../../components/EpisodeBlock";
 import React from "react";
@@ -10,6 +9,12 @@ import { EntrySeason } from "@/app/db/db";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+function getList(list?: string | string[]) {
+  if (list === "watchlist" || list === "played" || list === "finished")
+    return list;
+  else return "played";
+}
 
 const BUTTONS = (lists: string[]) =>
   lists.map((list) => ({

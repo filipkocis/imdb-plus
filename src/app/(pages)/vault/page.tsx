@@ -22,7 +22,7 @@ function getType(type?: string | string[]) {
   else return "all";
 }
 
-export function getList(list?: string | string[]) {
+function getList(list?: string | string[]) {
   if (list === "watchlist" || list === "played" || list === "finished")
     return list;
   else return "played";
