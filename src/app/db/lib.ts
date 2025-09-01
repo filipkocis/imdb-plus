@@ -237,6 +237,34 @@ export async function bindWizardSigil(
   return Res.ok({ id: wizard.id, name: wizard.name });
 }
 
+export async function getPossibleLists(mediaId: number) {
+  const wizard = await getWizard(true);
+  if (Res.isError(wizard)) return wizard;
+
+  const lists: ListType[] = [];
+  for (const list of ["watchlist", "played", "finished"] as ListType[]) {
+    if (wizard.ok[list].find((e) => e.id === mediaId)) lists.push(list);
+  }
+
+  return Res.ok(lists);
+}
+
+export async function getWizardEntry<T extends Entry["type"]>(
+  list: ListType,
+  type: T,
+  id: number,
+): Promise<Result<Extract<Entry, { type: T }>>> {
+  const wizard = await getWizard(true);
+  if (Res.isError(wizard)) return wizard;
+
+  const entry = wizard.ok[list].find((entry) => entry.id === id);
+  if (!entry || entry.type !== type) {
+    return Res.error("Entry not found in list");
+  }
+
+  return Res.ok(entry as Extract<Entry, { type: T }>);
+}
+
 export async function getWizardList(
   list: ListType,
   type: "movie" | "tv" | "all",
