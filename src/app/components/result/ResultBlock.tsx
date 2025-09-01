@@ -7,8 +7,8 @@ import { CiStar } from "react-icons/ci";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
 
-export default function ResultBlock({ item, className }: { item: SearchResult, className?: string }) {
-  const href = `/${item.media_type}/${item.id}`;
+export default function ResultBlock({ item, className, hrefOverride }: { item: SearchResult, className?: string, hrefOverride?: string }) {
+  const href = hrefOverride ?? `/${item.media_type}/${item.id}`;
   const isMovieOrTv = item.media_type === "movie" || item.media_type === "tv";
 
   let name, posterPath, imageAlt, description;

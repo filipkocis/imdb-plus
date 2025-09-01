@@ -116,7 +116,13 @@ export default async function VaultPage({
           Res.isError(media) ? (
             <ErrorDiv key={i} message={media.error} />
           ) : (
-            <ResultBlock key={details.ok.id} item={details.ok} />
+            <ResultBlock
+              key={media.ok.id}
+              item={media.ok}
+              {...(media.ok.media_type === "tv" && {
+                hrefOverride: `/vault/${media.ok.id}`,
+              })}
+            />
           ),
         )}
       </BlocksWrapper>
