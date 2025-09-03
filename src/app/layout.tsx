@@ -38,7 +38,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" style={{ scrollbarWidth: "none" }}>
       <WizardProvider>
         <PlayerProvider>
           <ServerListProvider>
