@@ -6,60 +6,52 @@ import {
 } from "@/components/ui/input-otp";
 import { cn } from "@/lib/utils";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
-import { LucideX } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
+import OverlayWrapper from "../OverlayWrapper";
 
 export default function UnlockOverlay({
   parts,
   inputMode,
+  open,
   setOpen,
   onSubmit,
 }: {
   parts: number[];
   inputMode: "text" | "numeric";
+  open: boolean;
   setOpen: (open: boolean) => void;
   onSubmit: (value: string) => Promise<void>;
 }) {
-  const [visible, setVisible] = useState(true);
   const [value, setValue] = useState("");
 
-  const closeOverlay = () => {
-    setValue("");
-    setVisible(false);
-    setTimeout(() => setOpen(false), 300);
-  };
-
   const handleSubmit = async (value: string) => {
+    setOpen(false);
+    setValue("");
     try {
       await onSubmit(value);
     } catch (error) {
       toast.error((error as Error)?.message || "Uh oh!");
-    } finally {
-      closeOverlay();
     }
   };
 
   let index = 0;
   return (
-    <div
+    <OverlayWrapper
+      onClose={() => setValue("")}
+      closeAfter={300}
       className={cn(
-        "fade-in transition-all absolute inset-0 z-[999] flex items-center justify-center bg-neutral-900/90 backdrop-blur-3xl",
-        visible ? "opacity-100" : "opacity-0",
+        "fade-in flex items-center justify-center bg-neutral-900/90 backdrop-blur-3xl",
       )}
+      enabled={open}
+      setEnabled={setOpen}
     >
-      <button
-        onClick={closeOverlay}
-        className="rounded-full bg-contrast text-black p-2 absolute top-4 right-4"
-      >
-        <LucideX size={24} />
-      </button>
-
       <InputOTP
         maxLength={parts.reduce((a, b) => a + b, 0)}
         pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
         inputMode={inputMode}
         value={value}
+        disabled={!open}
         onChange={setValue}
         onComplete={handleSubmit}
       >
@@ -74,6 +66,6 @@ export default function UnlockOverlay({
           </React.Fragment>
         ))}
       </InputOTP>
-    </div>
+    </OverlayWrapper>
   );
 }
