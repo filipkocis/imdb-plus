@@ -43,17 +43,15 @@ export default async function RootLayout({
         <PlayerProvider>
           <ServerListProvider>
             <body
-              className={`${geistSans.variable} ${geistMono.variable} antialiased relative w-screen h-[100dvh] overflow-hidden flex justify-center`}
+              className={`${geistSans.variable} ${geistMono.variable} antialiased relative h-[100dvh] flex justify-center`}
             >
               <Toaster theme="dark" />
               <PlayerOverlay />
               <Navbar />
-              <div className="sm:ml-[62px] gap-4 grid grow grid-rows-[auto_1fr] w-full py-3 sm:py-4 overflow-hidden max-w-[2000px]">
-                <Topbar />
-                <main className="relative overflow-y-auto overflow-x-hidden p-4 max-sm:pb-16">
-                  {children}
-                </main>
-              </div>
+              <Topbar className="max-w-[2000px] sm:pl-[78px] fixed top-0 z-20" />
+              <main className="max-w-[2000px] sm:ml-[62px] mt-[62px] w-full p-4 py-7 sm:py-8 max-sm:pb-16 h-fit">
+                {children}
+              </main>
             </body>
           </ServerListProvider>
         </PlayerProvider>

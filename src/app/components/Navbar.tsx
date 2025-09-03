@@ -7,7 +7,7 @@ export default async function Navbar() {
   const isWizard = await hasWizardBond();
 
   return (
-    <div className="z-20 absolute sm:left-0 bg-background max-sm:bottom-0 flex sm:flex-col gap-2 max-sm:border-t-2 sm:border-r-2 border-secondary max-sm:w-full sm:h-full overflow-x-hidden">
+    <div className="fixed z-30 sm:left-0 bg-background max-sm:bottom-0 flex sm:flex-col gap-2 max-sm:border-t-2 sm:border-r-2 border-secondary max-sm:w-full sm:h-[100dvh] overflow-x-hidden">
       <div className="max-sm:hidden items-center bg-secondary justify-center flex py-4">
         <Image src={Logo} alt="IMDb+" width={50} className="max-md:!w-[40px]" />
       </div>
