@@ -13,6 +13,7 @@ import { ImdbRating } from "./ImdbRating"
 import SeasonsBlock from "./SeasonsBlock"
 import { Button } from "@/components/ui/button"
 import { FaArrowUpRightFromSquare } from "react-icons/fa6"
+import ListMenu from "@/app/components/ListMenu"
 
 type MediaPageProps = {
   type: "movie"
@@ -140,6 +141,18 @@ export default async function MediaPage(props: MediaPageProps) {
                     : { type: "movie" })}
                 />
               )}
+
+              <ListMenu
+                className="bg-secondary p-2"
+                item={{
+                  id,
+                  name: title,
+                  imdbId: imdb_id,
+                  ...(type === "tv"
+                    ? { type: "tv", season: props.currentSeason }
+                    : { type: "movie" }),
+                }}
+              />
             </div>
           </div>
         </div>
