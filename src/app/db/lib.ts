@@ -241,13 +241,33 @@ export async function bindWizardSigil(
 
 export async function getPossibleLists(
   mediaId: number,
+  season?: number,
+  episode?: number,
 ): Promise<Result<ListType[]>> {
   const wizard = await getWizard(true);
   if (Res.isError(wizard)) return wizard;
 
+  const isTvSpecific = season !== undefined || episode !== undefined;
   const lists: ListType[] = [];
   for (const list of ["watchlist", "played", "finished"] as ListType[]) {
-    if (wizard.ok[list].find((e) => e.id === mediaId)) lists.push(list);
+    const found = wizard.ok[list].find((e) => e.id === mediaId);
+    if (!found) continue;
+
+    if (isTvSpecific) {
+      if (found.type !== "tv") continue;
+      if (season) {
+        const seasonFound = found.seasons.find((s) => s.season === season);
+        if (!seasonFound) continue;
+        if (episode) {
+          const episodeFound = seasonFound.episodes.find(
+            (e) => e.episode === episode,
+          );
+          if (!episodeFound) continue;
+        }
+      }
+    }
+
+    lists.push(list);
   }
 
   return Res.ok(lists);

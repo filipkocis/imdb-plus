@@ -49,3 +49,7 @@ export async function hasMagicBook(server = false) {
   if (!hasMagicBook && !server) cookieStore.delete("magic-book");
   return hasMagicBook;
 }
+
+export async function getExternalIDs(id: number, type: "movie" | "tv") {
+  return await TMDB.externalIDs(id, type);
+}
