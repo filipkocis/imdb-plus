@@ -6,6 +6,7 @@ import UnavailablePoster from "@/assets/unavailable.png"
 import { CiStar } from "react-icons/ci";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
+import ListMenu from "../ListMenu";
 
 export default function ResultBlock({ item, className, hrefOverride }: { item: SearchResult, className?: string, hrefOverride?: string }) {
   const href = hrefOverride ?? `/${item.media_type}/${item.id}`;
@@ -36,22 +37,22 @@ export default function ResultBlock({ item, className, hrefOverride }: { item: S
   }
 
   return (
-    <Link href={href} className={cn("group relative flex flex-col gap-2 overflow-hidden rounded-2xl", className)}> 
-      {isMovieOrTv && (
-        <div className="flex inset-0 z-10 absolute items-center justify-center scale-[150%] opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
-          <FaRegCirclePlay size={48} className="text-contrast" />
-        </div>
-      )}
+    <div className={cn("group relative overflow-hidden rounded-2xl", className)}> 
+      <Link href={href} className={cn("m-0 p-0 flex w-full h-full object-cover aspect-[2/3] overflow-hidden rounded-2xl", className)}>
+        {isMovieOrTv && (
+          <div className="flex inset-0 absolute items-center justify-center scale-[150%] opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
+            <FaRegCirclePlay size={48} className="text-contrast" />
+          </div>
+        )}
 
-      <div className="flex group relative contain-layout bg-secondary gradient-mask">
         <Image 
-          className="-z-10 group-hover:opacity-85 w-full h-full grow aspect-[2/3] overflow-hidden rounded-2xl" 
+          className="bg-secondary gradient-mask group-hover:opacity-85 w-full h-full grow aspect-[2/3] overflow-hidden rounded-2xl" 
           src={posterPath ? TMDB.poster(posterPath, "", "w500") : UnavailablePoster} 
           alt={imageAlt}
           width={200} 
           height={300} 
         />
-      </div>
+      </Link>
 
       <p className="backdrop-blur-3xl text-[0.65rem] font-extrabold uppercase absolute top-4 right-2 px-3 py-1 bg-black/20 rounded-full">{item.media_type}</p>
 
@@ -66,7 +67,11 @@ export default function ResultBlock({ item, className, hrefOverride }: { item: S
         <h2 className="text-nowrap whitespace-normal text-ellipsis overflow-hidden">{name}</h2>
         <p className="text-white/40">{description}</p>
       </div>
-    </Link>
+
+      {isMovieOrTv && (
+        <ListMenu className="absolute bottom-3 right-2 z-10" item={{ type: item.media_type, id: item.id, name, imdbId: false }} />
+      )}
+    </div>
   )
 }
 
