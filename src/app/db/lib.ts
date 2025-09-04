@@ -93,7 +93,7 @@ function removeEntry(wizard: Wizard, list: ListType, entry: MediaEntry) {
 
 function validateEntry(entry: MediaEntry) {
   if (typeof entry !== "object" || entry === null) {
-    throw new Error("Invalid entry");
+    return Res.error("Invalid entry");
   }
 
   const entries = Object.entries(entry);
@@ -104,33 +104,35 @@ function validateEntry(entry: MediaEntry) {
     (entry.imdbId !== null && typeof entry.imdbId !== "string") ||
     typeof entry.name !== "string"
   ) {
-    throw new Error("Invalid entry");
+    return Res.error("Invalid entry");
   }
 
   if (entry.type === "movie") {
-    if (entries.length !== 4) throw new Error("Invalid movie entry");
+    if (entries.length !== 4) return Res.error("Invalid movie entry");
   } else if (entry.type === "tv") {
     if (
       entries.length !== 6 ||
       typeof entry.season !== "number" ||
       typeof entry.episode !== "number"
     ) {
-      throw new Error("Invalid TV entry");
+      return Res.error("Invalid TV entry");
     }
 
     if (entry.season < 1 || entry.episode < 1) {
-      throw new Error("Invalid TV entry");
+      return Res.error("Invalid TV entry");
     }
   } else {
-    throw new Error("Invalid entry type");
+    return Res.error("Invalid entry type");
   }
+  return Res.ok(true);
 }
 
 export async function addListEntry(
   list: ListType,
   entry: MediaEntry,
 ): Promise<Result<boolean>> {
-  validateEntry(entry);
+  const validation = validateEntry(entry);
+  if (Res.isError(validation)) return validation;
 
   const wizardRes = await getWizard();
   if (Res.isError(wizardRes)) return wizardRes;
@@ -237,7 +239,9 @@ export async function bindWizardSigil(
   return Res.ok({ id: wizard.id, name: wizard.name });
 }
 
-export async function getPossibleLists(mediaId: number) {
+export async function getPossibleLists(
+  mediaId: number,
+): Promise<Result<ListType[]>> {
   const wizard = await getWizard(true);
   if (Res.isError(wizard)) return wizard;
 
