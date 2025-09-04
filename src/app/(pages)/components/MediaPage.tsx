@@ -51,7 +51,7 @@ export default async function MediaPage(props: MediaPageProps) {
     title = details.name
     runtime = details.episode_run_time.reduce((a, b) => a + b, 0) / details.episode_run_time.length
     release_date = details.first_air_date
-    const externalIds = await TMDB.externalTvShowIDs(id)
+    const externalIds = await TMDB.externalIDs(id, "tv")
     imdb_id = externalIds.ok?.imdb_id || null
     episode_count =
       details.seasons.find((s) => s.season_number == props.currentSeason)

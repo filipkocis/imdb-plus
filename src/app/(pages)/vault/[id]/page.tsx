@@ -44,7 +44,7 @@ export default async function VaultDetailsPage({
   const details = await TMDB.getTvDetails(mediaId);
   if (Res.isError(details)) return <ErrorDiv message={details.error} />;
 
-  const externalIds = await TMDB.externalTvShowIDs(mediaId);
+  const externalIds = await TMDB.externalIDs(mediaId, "tv");
   if (Res.isError(externalIds)) return <ErrorDiv message={externalIds.error} />;
 
   const seasons = [];

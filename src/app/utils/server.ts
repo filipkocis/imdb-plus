@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { Requests } from "@/app/utils/utils";
+import { TMDB } from "../tmdb/lib";
 
 function Server(name: string, url: string, moviePath: string, tvPath: string) {
   return { name, url, moviePath, tvPath };

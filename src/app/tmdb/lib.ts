@@ -63,8 +63,8 @@ export class TMDB {
     }
   }
 
-  static async externalTvShowIDs(id: string | number): Promise<Result<TvShowIDs>> {
-    return TMDB.fetch(`${TMDB.BASE}/tv/${id}/external_ids`)
+  static async externalIDs(id: number, type: 'movie' | 'tv'): Promise<Result<TvShowIDs | MovieIDs>> {
+    return TMDB.fetch(`${TMDB.BASE}/${type}/${id}/external_ids`)
   }
 
   static poster(path: string | null, fallback: string, size: string = "w500") {
@@ -482,6 +482,15 @@ export type TvShowIDs = {
   freebase_id: string | null
   tvdb_id: number
   tvrage_id: number
+  wikidata_id: string | null
+  facebook_id: string | null
+  instagram_id: string | null
+  twitter_id: string | null
+}
+
+export type MovieIDs = {
+  id: number
+  imdb_id: string | null
   wikidata_id: string | null
   facebook_id: string | null
   instagram_id: string | null
