@@ -65,5 +65,8 @@ export class GzipAdapter<T> implements Adapter<T> {
   }
 }
 
-const adapter = new GzipAdapter<Wizard[]>("db.json.gz", []);
+const filename = process.env.DATABASE_FILE;
+if (!filename) throw new Error("DATABASE_FILE not set");
+
+const adapter = new GzipAdapter<Wizard[]>(filename, []);
 export const db = new Low<Wizard[]>(adapter, []);
