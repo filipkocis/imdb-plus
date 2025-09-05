@@ -23,10 +23,10 @@ export default function TorrentList({ movie }: { movie: Movie }) {
       {movie.torrents.map((torrent) => (
         <div
           key={torrent.hash}
-          className="flex flex-col gap-2 sm:grid grid-cols-[1fr,1fr,1fr,auto] sm:gap-4"
+          className="flex flex-col gap-2 sm:grid grid-cols-[1fr,1fr,1fr,1fr] sm:gap-8"
         >
           <div className="flex sm:flex-col justify-between">
-            <p className="text-lg leading-5 flex gap-2">
+            <p className="text-lg leading-5 flex gap-4">
               <span
                 className={cn(
                   "font-semibold",
@@ -67,7 +67,7 @@ export default function TorrentList({ movie }: { movie: Movie }) {
             </p>
           </div>
 
-          <div className="flex sm:grid grid-cols-[auto,1fr] gap-x-2 gap-y-1 leading-none items-center text-[0.85rem] self-start [&>span]:uppercase [&>span]:text-neutral-300/80">
+          <div className="flex sm:grid grid-cols-[auto,1fr] gap-x-2 gap-y-1 leading-none items-center text-[0.85rem] sm:self-center [&>span]:uppercase [&>span]:text-neutral-300/80">
             <span>seeds</span>
             <p
               className={cn(
@@ -82,7 +82,7 @@ export default function TorrentList({ movie }: { movie: Movie }) {
               {torrent.peers}
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 self-end sm:self-center">
             <Button asChild variant="primary">
               <a
                 href={torrent.magnet}
