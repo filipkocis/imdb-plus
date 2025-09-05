@@ -14,6 +14,7 @@ import SeasonsBlock from "./SeasonsBlock"
 import { Button } from "@/components/ui/button"
 import { FaArrowUpRightFromSquare } from "react-icons/fa6"
 import ListMenu from "@/app/components/ListMenu"
+import DownloadButton from "@/app/components/download/DownloadButton"
 
 type MediaPageProps = {
   type: "movie"
@@ -74,7 +75,7 @@ export default async function MediaPage(props: MediaPageProps) {
             height={375}
           />
 
-          <div className="h-full flex flex-col justify-between gap-4">
+          <div className="w-full h-full flex flex-col justify-between gap-4">
             <div>
               <div className="flex items-center gap-x-4 flex-center flex-wrap">
                 <h1 className="text-2xl md:text-4xl font-bold">{title}</h1> 
@@ -153,6 +154,10 @@ export default async function MediaPage(props: MediaPageProps) {
                     : { type: "movie" }),
                 }}
               />
+
+              <div className="grow flex justify-end">
+                <DownloadButton id={imdb_id} />
+              </div>
             </div>
           </div>
         </div>
